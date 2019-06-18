@@ -957,7 +957,22 @@ if ((typeof module) == 'object' && module.exports) {
 );
 
 },{"crypto":1}],10:[function(require,module,exports){
+module.exports = {
+    addLineToTable: (tableId, obj) => {
+        console.log(obj['chegada']);
+        let table = document.getElementById(tableId);
+        let newRow = table.insertRow(-1);
+        let dataRow = '';
+        for(const prop in obj) {
+            dataRow += `<td>${obj[prop]}</td>`
+        }
+        newRow.innerHTML = dataRow;
+    }
+}
+},{}],11:[function(require,module,exports){
 const utils = require('./utils');
+const interface = require('./interface');
+
 
 // taxa_chegada
 const lamb = 0.5;
@@ -1000,9 +1015,9 @@ while(true) {
 
 for (let i = 0; i < pessoas.length; i++) {
     const element = pessoas[i];
-    document.getElementById('oie').innerHTML += `Pessoa ${i} <br> Chegada: ${element.chegada} <br> Saida: ${element.saida} <br><br>` 
+    interface.addLineToTable('metricas-table', element); 
 }
-},{"./utils":11}],11:[function(require,module,exports){
+},{"./interface":10,"./utils":12}],12:[function(require,module,exports){
 const seedrandom = require('seedrandom');
 const randomSeed = seedrandom();
 
@@ -1011,4 +1026,4 @@ module.exports = {
         return - Math.log(1 - randomSeed()) / rate;
     }
 }
-},{"seedrandom":2}]},{},[10]);
+},{"seedrandom":2}]},{},[11]);

@@ -1,4 +1,6 @@
 const utils = require('./utils');
+const interface = require('./interface');
+
 
 // taxa_chegada
 const lamb = 0.5;
@@ -41,5 +43,5 @@ while(true) {
 
 for (let i = 0; i < pessoas.length; i++) {
     const element = pessoas[i];
-    document.getElementById('oie').innerHTML += `Pessoa ${i} <br> Chegada: ${element.chegada} <br> Saida: ${element.saida} <br><br>` 
+    interface.addLineToTable('metricas-table', element); 
 }
