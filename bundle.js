@@ -959,7 +959,6 @@ if ((typeof module) == 'object' && module.exports) {
 },{"crypto":1}],10:[function(require,module,exports){
 module.exports = {
     addLineToTable: (tableId, obj) => {
-        console.log(obj['chegada']);
         let table = document.getElementById(tableId);
         let newRow = table.insertRow(-1);
         let dataRow = '';
@@ -1015,6 +1014,15 @@ while(true) {
 
 for (let i = 0; i < pessoas.length; i++) {
     const element = pessoas[i];
+    // apenas para preencher a tabela enqnt nao calcula realmente
+    element['a'] = 2.23534
+    element['b'] = 2.23534
+    element['c'] = 2.23534
+    element['d'] = 2.23534
+    element['e'] = 2.23534
+    element['f'] = 2.23534
+    element['g'] = 2.23534
+
     interface.addLineToTable('metricas-table', element); 
 }
 },{"./interface":10,"./utils":12}],12:[function(require,module,exports){

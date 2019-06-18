@@ -28,17 +28,23 @@
 
                 <!-- INPUTS -->
                 <div class="row">
-                    <!-- UTILIZAÇÃO DO SISTEMA -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="col-md-6 mb-4">
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                    <!-- FREGUESES -->
+                    <div class="col mb-4">
+                        <div class="card border-left-primary shadow py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">FREGUESES
                                         </div>
                                         <div class="row">
-                                            <div class="col">
-                                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                                            <div class="col mt-2">
+                                                <i class="fas fa-users text-gray-300"></i>
                                             </div>
                                             <div class="col-9">
                                                 <input id="input-rho" type="number"
@@ -50,6 +56,51 @@
                             </div>
                         </div>
                     </div>
+                    <!-- UTILIZAÇÃO DO SISTEMA -->
+                    <div class="col mb-4">
+                        <div class="card border-left-primary shadow py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">RHO
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-2">
+                                                <i class="fas fa-tachometer-alt text-gray-300"></i>
+                                            </div>
+                                            <div class="col-9">
+                                                <input id="input-rho" type="number"
+                                                    class="form-control bg-light border-0 small" placeholder="0.2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- RODADAS -->
+                    <div class="col mb-4">
+                        <div class="card border-left-primary shadow py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">RODADAS
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-2">
+                                                <i class="fas fa-circle-notch text-gray-300"></i>
+                                            </div>
+                                            <div class="col-9">
+                                                <input id="input-rho" type="number"
+                                                    class="form-control bg-light border-0 small" placeholder="3200">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- END INPUTS -->
 
@@ -87,4 +138,5 @@
     </div>
 </body>
 <script src="bundle.js"></script>
+
 </html>
