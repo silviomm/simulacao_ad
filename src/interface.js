@@ -2,10 +2,10 @@ module.exports = {
 
     // Adiciona uma linha ao final da tabela indicada.
     addTableRow: (tableId, obj) => {
-        let table = document.getElementById(tableId);
+        let table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
         let newRow = table.insertRow(-1);
         let dataRow = '';
-        for(const prop in obj) {
+        for (const prop in obj) {
             dataRow += `<td>${obj[prop]}</td>`
         }
         newRow.innerHTML = dataRow;
@@ -26,9 +26,7 @@ module.exports = {
     },
 
     clearTable: (tableId) => {
-        let tbody = document.getElementById(tableId+'-tbody');
-        tbody.parentNode.removeChild(tbody);
-        // tbody.innerHTML = '';
+        document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
     }
 
 

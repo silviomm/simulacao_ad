@@ -961,7 +961,7 @@ module.exports = {
 
     // Adiciona uma linha ao final da tabela indicada.
     addTableRow: (tableId, obj) => {
-        let table = document.getElementById(tableId);
+        let table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
         let newRow = table.insertRow(-1);
         let dataRow = '';
         for(const prop in obj) {
@@ -985,9 +985,7 @@ module.exports = {
     },
 
     clearTable: (tableId) => {
-        let tbody = document.getElementById(tableId+'-tbody');
-        tbody.parentNode.removeChild(tbody);
-        // tbody.innerHTML = '';
+        document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
     }
 
 
@@ -1008,6 +1006,7 @@ const simulador = require('./simulador');
 
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
+    interface.clearTable('metricas-table');
     const inputs = interface.getInputValues();
     let eventos = simulador.run(inputs);
     for (let i = 0; i < eventos.length; i++) {
@@ -1023,7 +1022,6 @@ document.getElementById('run-button').addEventListener('click', () => {
     
         interface.addTableRow('metricas-table', element);
     }
-    interface.clearTable('metricas-table');
 });
 },{"./interface":10,"./simulador":12}],12:[function(require,module,exports){
 // Nossas funções auxiliares

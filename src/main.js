@@ -13,11 +13,12 @@ const simulador = require('./simulador');
 
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
+    interface.clearTable('metricas-table');
     const inputs = interface.getInputValues();
     let eventos = simulador.run(inputs);
     for (let i = 0; i < eventos.length; i++) {
         const element = eventos[i];
-    
+
         // apenas para preencher a tabela enqnt nao calcula realmente
         element['a'] = 2.23534
         element['b'] = 2.23534
@@ -25,8 +26,7 @@ document.getElementById('run-button').addEventListener('click', () => {
         element['d'] = 2.23534
         element['e'] = 2.23534
         element['f'] = 2.23534
-    
+
         interface.addTableRow('metricas-table', element);
     }
-    interface.clearTable('metricas-table');
 });
