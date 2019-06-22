@@ -958,7 +958,9 @@ if ((typeof module) == 'object' && module.exports) {
 
 },{"crypto":1}],10:[function(require,module,exports){
 module.exports = {
-    addLineToTable: (tableId, obj) => {
+
+    // Adiciona uma linha ao final da tabela indicada.
+    addTableRow: (tableId, obj) => {
         let table = document.getElementById(tableId);
         let newRow = table.insertRow(-1);
         let dataRow = '';
@@ -966,66 +968,126 @@ module.exports = {
             dataRow += `<td>${obj[prop]}</td>`
         }
         newRow.innerHTML = dataRow;
+    },
+
+    // Retorna o valor dos inputs do html. Caso tenha algum erro, retorna valores padrão [FCFS, 0.2, 3200].
+    getInputValues: () => {
+        const inputDisciplina = document.getElementById('input-disciplina');
+        const inputDisciplinaValue = inputDisciplina.options[inputDisciplina.selectedIndex].value;
+        const inputRhoValue = document.getElementById('input-rho').value;
+        const inputRodadasValue = document.getElementById('input-rodadas').value;
+
+        return {
+            'disciplina': inputDisciplinaValue || 'FCFS',
+            'rho': inputRhoValue || 0.2,
+            'rodadas': inputRodadasValue || 3200
+        }
+    },
+
+    clearTable: (tableId) => {
+        let tbody = document.getElementById(tableId+'-tbody');
+        tbody.parentNode.removeChild(tbody);
+        // tbody.innerHTML = '';
     }
+
+
 }
 },{}],11:[function(require,module,exports){
-const utils = require('./utils');
+/* 
+    Trabalho de AD - MAB515 2019/1
+    Leonardo Dagnino
+    Silvio Mançano
+    Daniel Artine
+*/
+
+// Nossas funções de interação com a interface
 const interface = require('./interface');
 
+// Lógica principal do simulador
+const simulador = require('./simulador');
 
-// taxa_chegada
-const lamb = 0.5;
-// taxa_atendimento
-const mu = 0.2;
-// # rodadas
-const QNTD_RODADAS = 100;
-// tempo atual de simulação
-let tempoSimulacao = 0;
-// array de chegadas
-let pessoas = [];
-// tempo maximo de simulacao
-const tempoMax = 100;
-
-    tempoChegada = utils.getRandomExp(lamb);
-    tempoAtendimento = utils.getRandomExp(mu);
-    tempoSimulacao = tempoChegada;
+// Adiciona evento de 'click' no botão de play.
+document.getElementById('run-button').addEventListener('click', () => {
+    const inputs = interface.getInputValues();
+    let eventos = simulador.run(inputs);
+    for (let i = 0; i < eventos.length; i++) {
+        const element = eventos[i];
     
-    // chegada primeira pessoa
-    pessoas.push({'chegada': tempoChegada, 'saida': tempoChegada+tempoAtendimento});
-
-while(true) {
-    tempoChegada = utils.getRandomExp(lamb);
-    tempoAtendimento = utils.getRandomExp(mu);
-
-    momentoChegada = tempoChegada + tempoSimulacao;
-    if(momentoChegada > tempoMax)
-        break;
+        // apenas para preencher a tabela enqnt nao calcula realmente
+        element['a'] = 2.23534
+        element['b'] = 2.23534
+        element['c'] = 2.23534
+        element['d'] = 2.23534
+        element['e'] = 2.23534
+        element['f'] = 2.23534
     
-    let momentoSaida;
-    let ultimoASair = pessoas[pessoas.length-1].saida;
-    if(ultimoASair > momentoChegada)
-        momentoSaida = ultimoASair + tempoAtendimento
-    else
-        momentoSaida = momentoChegada + tempoAtendimento
-    
-    pessoas.push({'chegada': momentoChegada, 'saida': momentoSaida});
-    tempoSimulacao += tempoChegada;
+        interface.addTableRow('metricas-table', element);
+    }
+    interface.clearTable('metricas-table');
+});
+},{"./interface":10,"./simulador":12}],12:[function(require,module,exports){
+// Nossas funções auxiliares
+const utils = require('./utils');
+
+module.exports = {
+    run: (inputs) => {
+
+        // media taxa de atendimento -> X_= 1
+        const mi = 1;
+        // taxa_chegada ->  rho = lambda*X_ -> lambda = rho
+        const lambda = inputs.rho;
+        // # rodadas
+        const rodadas = inputs.rodadas;
+        // disciplina de atendimento
+        const disciplina = inputs.disciplina;
+        // tempo atual de simulação
+        let tempoSimulacao = 0;
+        // array de chegadas
+        let eventos = [];
+        // tempo maximo de simulacao
+        const tempoMax = 100;
+
+        tempoChegada = utils.getRandomExp(lambda);
+        tempoAtendimento = utils.getRandomExp(mi);
+        tempoSimulacao = tempoChegada;
+
+        // chegada primeira pessoa
+        eventos.push({
+            'rodada': 0,
+            'chegada': tempoChegada,
+            'saida': tempoChegada + tempoAtendimento
+        });
+
+        for (let i = 0; i < rodadas; i++) {
+            while (true) {
+                tempoChegada = utils.getRandomExp(lambda);
+                tempoAtendimento = utils.getRandomExp(mi);
+
+                momentoChegada = tempoChegada + tempoSimulacao;
+                if (momentoChegada > tempoMax)
+                    break;
+
+                let momentoSaida;
+                let ultimoASair = eventos[eventos.length - 1].saida;
+                if (ultimoASair > momentoChegada)
+                    momentoSaida = ultimoASair + tempoAtendimento
+                else
+                    momentoSaida = momentoChegada + tempoAtendimento
+
+                eventos.push({
+                    'rodada': i,
+                    'chegada': momentoChegada,
+                    'saida': momentoSaida
+                });
+                tempoSimulacao += tempoChegada;
+            }
+            tempoSimulacao = 0;
+        }
+
+        return eventos;
+    }
 }
-
-for (let i = 0; i < pessoas.length; i++) {
-    const element = pessoas[i];
-    // apenas para preencher a tabela enqnt nao calcula realmente
-    element['a'] = 2.23534
-    element['b'] = 2.23534
-    element['c'] = 2.23534
-    element['d'] = 2.23534
-    element['e'] = 2.23534
-    element['f'] = 2.23534
-    element['g'] = 2.23534
-
-    interface.addLineToTable('metricas-table', element); 
-}
-},{"./interface":10,"./utils":12}],12:[function(require,module,exports){
+},{"./utils":13}],13:[function(require,module,exports){
 const seedrandom = require('seedrandom');
 const randomSeed = seedrandom();
 

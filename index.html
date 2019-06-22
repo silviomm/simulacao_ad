@@ -33,25 +33,27 @@
                         <div class="clearfix">
                             <div class="text-center">
                                 <img class="img-fluid px-3 px-sm-4 mt-3" style="width: 25rem;"
-                                    src="https://ufrj.br/img/minerva/002minerva_color_hor.png" alt="">
+                                    src="./vendor/002minerva_color_hor.png" alt="">
                             </div>
                         </div>
                     </div>
-                    <!-- FREGUESES -->
+                    <!-- DISCIPLINA -->
                     <div class="col mb-4 mt-4">
                         <div class="card border-left-primary shadow py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">FREGUESES
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">DISCIPLINA
                                         </div>
                                         <div class="row align-items-center">
                                             <div class="col mt-2">
-                                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                                                <i class="fas fa-arrow-alt-circle-right fa-2x text-gray-300"></i>
                                             </div>
                                             <div class="col-9">
-                                                <input id="input-rho" type="number"
-                                                    class="form-control bg-light border-0 small" placeholder="70">
+                                                <select name="disciplina" id="input-disciplina" class="form-control bg-light border-0 small">
+                                                    <option value="FCFS">FCFS</option>
+                                                    <option value="LCFS">LCFS</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -73,7 +75,7 @@
                                             </div>
                                             <div class="col-9">
                                                 <input id="input-rho" type="number"
-                                                    class="form-control bg-light border-0 small" placeholder="0.2">
+                                                    class="form-control bg-light border-0 small" value="0.2">
                                             </div>
                                         </div>
                                     </div>
@@ -94,8 +96,8 @@
                                                 <i class="fas fa-circle-notch fa-2x text-gray-300"></i>
                                             </div>
                                             <div class="col-9">
-                                                <input id="input-rho" type="number"
-                                                    class="form-control bg-light border-0 small" placeholder="3200">
+                                                <input id="input-rodadas" type="number"
+                                                    class="form-control bg-light border-0 small" value="1">
                                             </div>
                                         </div>
                                     </div>
@@ -109,9 +111,9 @@
                 <!-- PLAY BUTTON -->
                 <div class="row">
                     <div class="col-12 text-center">
-                        <p style="">
-                            <a href="#" class="btn btn-success btn-lg">
-                                <span class="fas fa-play"></span> Play
+                        <p>
+                            <a href="#" id="run-button" class="btn btn-success btn-lg">
+                                <span class="fas fa-play mr-2"></span> Run
                             </a>
                         </p>
                     </div>
@@ -140,7 +142,7 @@
                                         <th>V[T]</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="metricas-table-tbody">
                                 </tbody>
                             </table>
                         </div>
