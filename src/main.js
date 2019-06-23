@@ -17,19 +17,12 @@ document.getElementById('run-button').addEventListener('click', () => {
 });
 
 function executa() {
-    setTimeout(function () {
-        interface.clearTable('metricas-table');
-        const inputs = interface.getInputValues();
-        let rodadas = acontece.run(inputs);
-        for (let i = 0; i < rodadas.length; i++) {
-            const r = rodadas[i];
-            interface.addTableRow('metricas-table', r.metricas);
-        }
-    }, 50)
-}
-
-function modal() {
-    $('.modal').modal('show');
-    $('.modal').modal('hide');
+    interface.clearTable('metricas-table');
+    const inputs = interface.getInputValues();
+    let rodadas = acontece.run(inputs);
+    for (let i = 0; i < rodadas.length; i++) {
+        const r = rodadas[i];
+        interface.addTableRow('metricas-table', r.metricas);
+    }
 
 }
