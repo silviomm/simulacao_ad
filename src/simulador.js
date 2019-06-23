@@ -121,28 +121,26 @@ class Stats {
 
 // elemento: arrivalTime, entryTime, exitTime
 
-
-let generator = new ArrivalGenerator(0.2);
-let queue = new LCFSQueue();
-let server = new ExponentialServer(1);
-let stats = new Stats();
-
-let currentTime = 0;
-let arrival = 0;
-
-let nextArrival = generator.getNext();
-let queueHead = queue.peek();
-let serverState = server.getState();
-
-console.log(nextArrival, queueHead, serverState);
-
 module.exports = {
     run: (inputs) => {
         const nrodadas = inputs.rodadas;
         let rodadas = [];
-        let r=0;
+        let r = 0;
 
         for (let i = 0; i < nrodadas; i++) {
+
+            let generator = new ArrivalGenerator(inputs.rho);
+            let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
+            let server = new ExponentialServer(1);
+            let stats = new Stats();
+
+            let currentTime = 0;
+            let arrival = 0;
+
+            let nextArrival = generator.getNext();
+            let queueHead = queue.peek();
+            let serverState = server.getState();
+
             while (arrival < 50) {
                 if (serverState.status == 'empty') {
                     if (queueHead) { // se servidor esta vazio, e ha alguem na fila
@@ -201,6 +199,3 @@ module.exports = {
         return rodadas;
     }
 }
-
-// console.log(stats.X.calculaMedia(), stats.W.calculaMedia(), stats.T.calculaMedia(),
-//     stats.T.calculaMedia() - stats.X.calculaMedia() - stats.W.calculaMedia());
