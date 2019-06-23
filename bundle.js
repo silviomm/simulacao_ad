@@ -957,53 +957,41 @@ if ((typeof module) == 'object' && module.exports) {
 );
 
 },{"crypto":1}],10:[function(require,module,exports){
-module.exports = {
 
-    // Adiciona uma linha ao final da tabela indicada.
-    addTableRow: (tableId, obj) => {
-        let table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
-        let newRow = table.insertRow(-1);
-        let dataRow = '';
-        for (const prop in obj) {
-            dataRow += `<td>${obj[prop]}</td>`
-        }
-        newRow.innerHTML = dataRow;
-    },
-
-    // Retorna o valor dos inputs do html. Caso tenha algum erro, retorna valores padrão [FCFS, 0.2, 3200].
-    getInputValues: () => {
-        const inputDisciplina = document.getElementById('input-disciplina');
-        const inputDisciplinaValue = inputDisciplina.options[inputDisciplina.selectedIndex].value;
-        const inputRhoValue = document.getElementById('input-rho').value;
-        const inputRodadasValue = document.getElementById('input-rodadas').value;
-
-        return {
-            'disciplina': inputDisciplinaValue || 'FCFS',
-            'rho': inputRhoValue || 0.2,
-            'rodadas': inputRodadasValue || 3200
-        }
-    },
-
-    clearTable: (tableId) => {
-        document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
+class Estimador {
+    constructor() {
+        this.estimadorMedia = 0
+        this.estimadorVariancia = 0
+        this.n = 0
     }
 
+    acontece(x) {
+        this.estimadorMedia += x
+        this.estimadorVariancia += x ** 2
+        this.n += 1
+    }
 
+    calculaMedia() {
+        if (this.n < 1) {
+            return Infinity
+        }
+        return this.estimadorMedia/this.n
+    }
+
+    calculaVariancia() {
+        if (this.n < 2) {
+            return Infinity
+        }
+        return (this.estimadorVariancia / (this.n - 1))
+            - (this.estimadorMedia ** 2)/(this.n*(this.n-1))
+    }
+
+    calculaDesvioPadrao() {
+        return Math.sqrt(this.calculaVariancia())
+    }
 }
-},{}],11:[function(require,module,exports){
-/* 
-    Trabalho de AD - MAB515 2019/1
-    Leonardo Dagnino
-    Silvio Mançano
-    Daniel Artine
-*/
 
-// Nossas funções de interação com a interface
-const interface = require('./interface');
-
-// Lógica principal do simulador
-const simulador = require('./simulador');
-
+<<<<<<< HEAD
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
     executa();
@@ -1039,8 +1027,13 @@ function modal(){
   
  }
 },{"./interface":10,"./simulador":12}],12:[function(require,module,exports){
+=======
+module.exports = Estimador
+},{}],11:[function(require,module,exports){
+>>>>>>> c8360e4702dfe153c346cda988417c04b8c2f0a9
 // Nossas funções auxiliares
 const utils = require('./utils');
+const Estimador = require('./estimador');
 
 module.exports = {
     run: (inputs) => {
@@ -1050,13 +1043,16 @@ module.exports = {
         // taxa_chegada ->  rho = lambda*X_ -> lambda = rho
         const lambda = inputs.rho;
         // # rodadas
-        const rodadas = inputs.rodadas;
+        const nrodadas = inputs.rodadas;
         // disciplina de atendimento
         const disciplina = inputs.disciplina;
         // tempo atual de simulação
         let tempoSimulacao = 0;
         // array de chegadas
         let eventos = [];
+        // array de rodadas
+        let rodadas = [];
+        let r = 0;
         // tempo maximo de simulacao
         const tempoMax = 100;
 
@@ -1066,12 +1062,15 @@ module.exports = {
 
         // chegada primeira pessoa
         eventos.push({
-            'rodada': 0,
             'chegada': tempoChegada,
             'saida': tempoChegada + tempoAtendimento
         });
 
-        for (let i = 0; i < rodadas; i++) {
+        for (let i = 0; i < nrodadas; i++) {
+            const estX = new Estimador();
+            const estW = new Estimador();
+            const estT = new Estimador();
+
             while (true) {
                 tempoChegada = utils.getRandomExp(lambda);
                 tempoAtendimento = utils.getRandomExp(mi);
@@ -1082,25 +1081,101 @@ module.exports = {
 
                 let momentoSaida;
                 let ultimoASair = eventos[eventos.length - 1].saida;
-                if (ultimoASair > momentoChegada)
+                if (ultimoASair > momentoChegada) {
                     momentoSaida = ultimoASair + tempoAtendimento
-                else
+                } else {
                     momentoSaida = momentoChegada + tempoAtendimento
+                }
 
-                eventos.push({
-                    'rodada': i,
-                    'chegada': momentoChegada,
-                    'saida': momentoSaida
-                });
+                estX.acontece(tempoAtendimento);
+                if ((momentoSaida - (momentoChegada + tempoAtendimento)) <= 0)
+                    estW.acontece(0);
+                else
+                    estW.acontece(momentoSaida - momentoChegada - tempoAtendimento);
+                estT.acontece(momentoSaida - momentoChegada);
                 tempoSimulacao += tempoChegada;
             }
+            rodadas.push({
+                'metricas': {
+                    'rodada': ++r,
+                    'X_': estX.calculaMedia(),
+                    'Nq_': '2do',
+                    'W_': estW.calculaMedia(),
+                    'T_': estT.calculaMedia(),
+                    'Var[X]': estX.calculaVariancia(),
+                    'Var[Nq]': '2do',
+                    'Var[W]': estW.calculaVariancia(),
+                    'Var[T]': estT.calculaVariancia()
+                },
+                'eventos': eventos,
+
+            })
             tempoSimulacao = 0;
+
         }
 
-        return eventos;
+        return rodadas;
     }
 }
-},{"./utils":13}],13:[function(require,module,exports){
+},{"./estimador":10,"./utils":14}],12:[function(require,module,exports){
+module.exports = {
+
+    // Adiciona uma linha ao final da tabela indicada.
+    addTableRow: (tableId, obj) => {
+        let table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+        let newRow = table.insertRow(-1);
+        let dataRow = '';
+        for (const prop in obj) {
+            dataRow += `<td>${obj[prop]}</td>`
+        }
+        newRow.innerHTML = dataRow;
+    },
+
+    // Retorna o valor dos inputs do html. Caso tenha algum erro, retorna valores padrão [FCFS, 0.2, 3200].
+    getInputValues: () => {
+        const inputDisciplina = document.getElementById('input-disciplina');
+        const inputDisciplinaValue = inputDisciplina.options[inputDisciplina.selectedIndex].value;
+        const inputRhoValue = document.getElementById('input-rho').value;
+        const inputRodadasValue = document.getElementById('input-rodadas').value;
+
+        return {
+            'disciplina': inputDisciplinaValue || 'FCFS',
+            'rho': inputRhoValue || 0.2,
+            'rodadas': inputRodadasValue || 3200
+        }
+    },
+
+    clearTable: (tableId) => {
+        document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
+    }
+
+
+}
+},{}],13:[function(require,module,exports){
+/* 
+    Trabalho de AD - MAB515 2019/1
+    Leonardo Dagnino
+    Silvio Mançano
+    Daniel Artine
+*/
+
+// Nossas funções de interação com a interface
+const interface = require('./interface');
+
+// Lógica principal do simulador
+const fcfs = require('./fcfs');
+
+// Adiciona evento de 'click' no botão de play.
+document.getElementById('run-button').addEventListener('click', () => {
+    interface.clearTable('metricas-table');
+    const inputs = interface.getInputValues();
+    let rodadas = fcfs.run(inputs);
+    for (let i = 0; i < rodadas.length; i++) {
+        const r = rodadas[i];
+        interface.addTableRow('metricas-table', r.metricas);
+    }
+});
+},{"./fcfs":11,"./interface":12}],14:[function(require,module,exports){
 const seedrandom = require('seedrandom');
 const randomSeed = seedrandom();
 
@@ -1109,4 +1184,4 @@ module.exports = {
         return -Math.log(1 - randomSeed()) / rate;
     }
 }
-},{"seedrandom":2}]},{},[11]);
+},{"seedrandom":2}]},{},[13]);

@@ -9,7 +9,7 @@
 const interface = require('./interface');
 
 // Lógica principal do simulador
-const simulador = require('./simulador');
+const fcfs = require('./fcfs');
 
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
@@ -21,19 +21,10 @@ function executa(){
     setTimeout(function(){
         interface.clearTable('metricas-table');
     const inputs = interface.getInputValues();
-    let eventos = simulador.run(inputs);
-    for (let i = 0; i < eventos.length; i++) {
-        const element = eventos[i];
-
-        // apenas para preencher a tabela enqnt nao calcula realmente
-        element['a'] = 2.23534
-        element['b'] = 2.23534
-        element['c'] = 2.23534
-        element['d'] = 2.23534
-        element['e'] = 2.23534
-        element['f'] = 2.23534
-
-        interface.addTableRow('metricas-table', element);
+    let rodadas = fcfs.run(inputs);
+    for (let i = 0; i < rodadas.length; i++) {
+        const r = rodadas[i];
+        interface.addTableRow('metricas-table', r.metricas);
     }
     }, 50)
 }
