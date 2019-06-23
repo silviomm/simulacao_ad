@@ -1,5 +1,6 @@
 const utils = require('./utils');
-const Estimador = require('./estimador');
+const DiscreteEstimator = require('./discrete-estimator');
+const ContinuousEstimator = require('./continuous-estimator');
 
 class ArrivalGenerator {
     constructor(rate, time = 0) {
@@ -29,6 +30,10 @@ class LCFSQueue {
     get() {
         return this.queue.pop();
     }
+
+    length() {
+        return this.queue.length;
+    }
 }
 
 class FCFSQueue {
@@ -47,6 +52,10 @@ class FCFSQueue {
     get() {
         return this.queue.pop();
     }
+
+    length() {
+        return this.queue.length;
+    }
 }
 
 class ExponentialServer {
@@ -64,7 +73,6 @@ class ExponentialServer {
     }
 
     getState() {
-        // chegada para a fila, pula tempo pra chegada
         if (this.currentElement != null) {
             return {
                 status: 'full',
@@ -90,6 +98,25 @@ class ExponentialServer {
     }
 }
 
+class Stats {
+    constructor() {
+        this.X = new DiscreteEstimator();
+        this.W = new DiscreteEstimator();
+        this.T = new DiscreteEstimator();
+        this.Nq = new ContinuousEstimator();
+    }
+
+    fromElement(elt) {
+        this.X.sample(elt.exitTime - elt.entryTime);
+        this.W.sample(elt.entryTime - elt.arrivalTime);
+        this.T.sample(elt.exitTime - elt.arrivalTime);
+    }
+
+    updateQueue(time, nq) {
+        this.Nq.sample(time, nq);
+    }
+}
+
 function queueToServer(time, queue, server) {
     let elt = queue.get();
     server.enter(time, elt);
@@ -103,20 +130,6 @@ function arrivalToQueue(time, queue) {
 
 function exitServer(server) {
     return server.exit();
-}
-
-class Stats {
-    constructor() {
-        this.X = new Estimador();
-        this.W = new Estimador();
-        this.T = new Estimador();
-    }
-
-    fodaSe(elt) {
-        this.X.acontece(elt.exitTime - elt.entryTime);
-        this.W.acontece(elt.entryTime - elt.arrivalTime);
-        this.T.acontece(elt.exitTime - elt.arrivalTime);
-    }
 }
 
 // elemento: arrivalTime, entryTime, exitTime
@@ -141,19 +154,25 @@ module.exports = {
             let queueHead = queue.peek();
             let serverState = server.getState();
 
-            while (arrival < 500) {
+            while (arrival < 5000) {
                 if (serverState.status == 'empty') {
                     if (queueHead) { // se servidor esta vazio, e ha alguem na fila
-                        console.log("fila pro servidor", );
+                        //console.log("fila pro servidor", currentTime);
+                        let nq = queue.length();
                         queueToServer(currentTime, queue, server);
+
+                        stats.updateQueue(currentTime, nq);
 
                         queueHead = queue.peek();
                         serverState = server.getState();
                     } else { // servidor e fila vazios
-                        console.log("chegada pra fila 1", nextArrival);
+                        //console.log("chegada pra fila 1", nextArrival);
+                        let nq = queue.length();
                         arrivalToQueue(nextArrival, queue);
 
                         currentTime = nextArrival;
+
+                        stats.updateQueue(currentTime, nq);
 
                         nextArrival = generator.getNext();
                         queueHead = queue.peek();
@@ -162,21 +181,24 @@ module.exports = {
                     }
                 } else { // servidor ocupado
                     if (nextArrival <= serverState.exitTime) {
-                        console.log("chegada pra fila 2", nextArrival);
+                        //console.log("chegada pra fila 2", nextArrival);
+                        let nq = queue.length();
                         arrivalToQueue(nextArrival, queue);
 
                         currentTime = nextArrival;
+
+                        stats.updateQueue(currentTime, nq);
 
                         nextArrival = generator.getNext();
                         queueHead = queue.peek();
                         arrival += 1;
                     } else {
-                        console.log("saida do servidor", serverState.exitTime);
+                        //console.log("saida do servidor", serverState.exitTime);
                         elt = exitServer(server);
 
                         currentTime = serverState.exitTime;
 
-                        stats.fodaSe(elt);
+                        stats.fromElement(elt);
 
                         serverState = server.getState();
                     }
@@ -185,14 +207,14 @@ module.exports = {
             rodadas.push({
                 'metricas': {
                     'rodada': ++r,
-                    'X_': stats.X.calculaMedia(),
-                    'Nq_': '2do',
-                    'W_': stats.W.calculaMedia(),
-                    'T_': stats.T.calculaMedia(),
-                    'Var[X]': stats.X.calculaVariancia(),
-                    'Var[Nq]': '2do',
-                    'Var[W]': stats.W.calculaVariancia(),
-                    'Var[T]': stats.T.calculaVariancia()
+                    'X_': stats.X.getAverage(),
+                    'Nq_': stats.Nq.getAverage(currentTime),
+                    'W_': stats.W.getAverage(),
+                    'T_': stats.T.getAverage(),
+                    'Var[X]': stats.X.getVariance(),
+                    'Var[Nq]': stats.Nq.getVariance(currentTime),
+                    'Var[W]': stats.W.getVariance(),
+                    'Var[T]': stats.T.getVariance()
                 },
             });
         }
