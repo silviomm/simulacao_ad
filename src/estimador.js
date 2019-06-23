@@ -30,3 +30,5 @@ class Estimador {
         return Math.sqrt(this.calculaVariancia())
     }
 }
+
+module.exports = Estimador

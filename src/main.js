@@ -11,6 +11,8 @@ const interface = require('./interface');
 // Lógica principal do simulador
 const simulador = require('./simulador');
 
+const Estimador = require('./estimador');
+
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
     interface.clearTable('metricas-table');
