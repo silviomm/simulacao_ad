@@ -964,7 +964,7 @@ module.exports = {
         let table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
         let newRow = table.insertRow(-1);
         let dataRow = '';
-        for(const prop in obj) {
+        for (const prop in obj) {
             dataRow += `<td>${obj[prop]}</td>`
         }
         newRow.innerHTML = dataRow;
@@ -1006,12 +1006,18 @@ const simulador = require('./simulador');
 
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
-    interface.clearTable('metricas-table');
+    executa();
+    
+});
+
+function executa(){
+    setTimeout(function(){
+        interface.clearTable('metricas-table');
     const inputs = interface.getInputValues();
     let eventos = simulador.run(inputs);
     for (let i = 0; i < eventos.length; i++) {
         const element = eventos[i];
-    
+
         // apenas para preencher a tabela enqnt nao calcula realmente
         element['a'] = 2.23534
         element['b'] = 2.23534
@@ -1019,10 +1025,19 @@ document.getElementById('run-button').addEventListener('click', () => {
         element['d'] = 2.23534
         element['e'] = 2.23534
         element['f'] = 2.23534
-    
+
         interface.addTableRow('metricas-table', element);
     }
-});
+    }, 250)
+}
+
+function modal(){
+    console.log('fazendo')
+    $('.modal').modal('show');
+    console.log('desfiz');
+    $('.modal').modal('hide');
+  
+ }
 },{"./interface":10,"./simulador":12}],12:[function(require,module,exports){
 // Nossas funções auxiliares
 const utils = require('./utils');
@@ -1091,7 +1106,7 @@ const randomSeed = seedrandom();
 
 module.exports = {
     getRandomExp: (rate) => {
-        return - Math.log(1 - randomSeed()) / rate;
+        return -Math.log(1 - randomSeed()) / rate;
     }
 }
 },{"seedrandom":2}]},{},[11]);
