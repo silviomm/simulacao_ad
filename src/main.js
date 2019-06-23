@@ -9,30 +9,27 @@
 const interface = require('./interface');
 
 // Lógica principal do simulador
-//const fcfs = require('./fcfs');
-
-const acontece = require('./acontece');
+const acontece = require('./simulador');
 
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
     executa();
-    
 });
 
-function executa(){
-    setTimeout(function(){
+function executa() {
+    setTimeout(function () {
         interface.clearTable('metricas-table');
-    const inputs = interface.getInputValues();
-    let rodadas = fcfs.run(inputs);
-    for (let i = 0; i < rodadas.length; i++) {
-        const r = rodadas[i];
-        interface.addTableRow('metricas-table', r.metricas);
-    }
+        const inputs = interface.getInputValues();
+        let rodadas = acontece.run(inputs);
+        for (let i = 0; i < rodadas.length; i++) {
+            const r = rodadas[i];
+            interface.addTableRow('metricas-table', r.metricas);
+        }
     }, 50)
 }
 
-function modal(){
+function modal() {
     $('.modal').modal('show');
     $('.modal').modal('hide');
-  
- }
+
+}
