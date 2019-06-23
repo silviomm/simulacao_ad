@@ -206,15 +206,15 @@ module.exports = {
             }
             rodadas.push({
                 'metricas': {
-                    'rodada': ++r,
-                    'X_': stats.X.getAverage(),
-                    'Nq_': stats.Nq.getAverage(currentTime),
-                    'W_': stats.W.getAverage(),
-                    'T_': stats.T.getAverage(),
-                    'Var[X]': stats.X.getVariance(),
-                    'Var[Nq]': stats.Nq.getVariance(currentTime),
-                    'Var[W]': stats.W.getVariance(),
-                    'Var[T]': stats.T.getVariance()
+                    'rodada': i,
+                    'X_': stats.X.getAverage().toFixed(5),
+                    'Nq_': stats.Nq.getAverage(currentTime).toFixed(5),
+                    'W_': stats.W.getAverage().toFixed(5),
+                    'T_': stats.T.getAverage().toFixed(5),
+                    'Var[X]': stats.X.getVariance().toFixed(5),
+                    'Var[Nq]': stats.Nq.getVariance(currentTime).toFixed(5),
+                    'Var[W]': stats.W.getVariance().toFixed(5),
+                    'Var[T]': stats.T.getVariance().toFixed(5)
                 },
             });
         }
