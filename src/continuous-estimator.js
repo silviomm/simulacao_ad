@@ -1,14 +1,14 @@
 class ContinuousEstimator {
-    constructor() {
+    constructor(startTime = 0) {
         this.sum = 0;
         this.squareSum = 0;
-        this.startTime = 0;
+        this.startTime = startTime;
         this.lastTime = 0;
     }
 
     sample(time, value) {
         this.sum += value * (time - this.lastTime);
-        this.squareSum += value ** 2 * (time - this.lastTime);
+        this.squareSum += (value ** 2) * (time - this.lastTime);
         this.lastTime = time;
     }
 

@@ -100,20 +100,38 @@ class ExponentialServer {
 
 class Stats {
     constructor() {
+        this.resetRoundEstimators(0);
+
         this.X = new DiscreteEstimator();
         this.W = new DiscreteEstimator();
         this.T = new DiscreteEstimator();
-        this.Nq = new ContinuousEstimator();
+        this.Nq = new DiscreteEstimator();
+    }
+
+    resetRoundEstimators(time) {
+        this.rX = new DiscreteEstimator();
+        this.rW = new DiscreteEstimator();
+        this.rT = new DiscreteEstimator();
+        this.rNq = new ContinuousEstimator(time);
     }
 
     fromElement(elt) {
-        this.X.sample(elt.exitTime - elt.entryTime);
-        this.W.sample(elt.entryTime - elt.arrivalTime);
-        this.T.sample(elt.exitTime - elt.arrivalTime);
+        this.rX.sample(elt.exitTime - elt.entryTime);
+        this.rW.sample(elt.entryTime - elt.arrivalTime);
+        this.rT.sample(elt.exitTime - elt.arrivalTime);
     }
 
     updateQueue(time, nq) {
-        this.Nq.sample(time, nq);
+        this.rNq.sample(time, nq);
+    }
+
+    nextRound(time) {
+        this.X.sample(this.rX.getAverage());
+        this.W.sample(this.rW.getAverage());
+        this.T.sample(this.rT.getAverage());
+        this.Nq.sample(this.rNq.getAverage(time));
+
+        this.resetRoundEstimators(time);
     }
 }
 
@@ -140,21 +158,23 @@ module.exports = {
         let rodadas = [];
         let r = 0;
 
+        let generator = new ArrivalGenerator(inputs.rho);
+        let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
+        let server = new ExponentialServer(1);
+        let stats = new Stats();
+
+        let currentTime = 0;
+
         for (let i = 0; i < nrodadas; i++) {
-
-            let generator = new ArrivalGenerator(inputs.rho);
-            let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
-            let server = new ExponentialServer(1);
-            let stats = new Stats();
-
-            let currentTime = 0;
-            let arrival = 0;
+            let arrivals = 0;
+            let departures = 0;
 
             let nextArrival = generator.getNext();
             let queueHead = queue.peek();
             let serverState = server.getState();
 
-            while (arrival < 5000) {
+            while (arrivals < 5000) {
+            // while (departures < 5000) {
                 if (serverState.status == 'empty') {
                     if (queueHead) { // se servidor esta vazio, e ha alguem na fila
                         //console.log("fila pro servidor", currentTime);
@@ -177,7 +197,7 @@ module.exports = {
                         nextArrival = generator.getNext();
                         queueHead = queue.peek();
 
-                        arrival += 1;
+                        arrivals += 1;
                     }
                 } else { // servidor ocupado
                     if (nextArrival <= serverState.exitTime) {
@@ -191,7 +211,8 @@ module.exports = {
 
                         nextArrival = generator.getNext();
                         queueHead = queue.peek();
-                        arrival += 1;
+
+                        arrivals += 1;
                     } else {
                         //console.log("saida do servidor", serverState.exitTime);
                         elt = exitServer(server);
@@ -201,23 +222,31 @@ module.exports = {
                         stats.fromElement(elt);
 
                         serverState = server.getState();
+
+                        departures += 1;
                     }
                 }
             }
             rodadas.push({
                 'metricas': {
-                    'rodada': i,
-                    'X_': stats.X.getAverage().toFixed(5),
-                    'Nq_': stats.Nq.getAverage(currentTime).toFixed(5),
-                    'W_': stats.W.getAverage().toFixed(5),
-                    'T_': stats.T.getAverage().toFixed(5),
-                    'Var[X]': stats.X.getVariance().toFixed(5),
-                    'Var[Nq]': stats.Nq.getVariance(currentTime).toFixed(5),
-                    'Var[W]': stats.W.getVariance().toFixed(5),
-                    'Var[T]': stats.T.getVariance().toFixed(5)
+                    'rodada':   i,
+                    'X_':       stats.rX.getAverage().toFixed(5),
+                    'Nq_':      stats.rNq.getAverage(currentTime).toFixed(5),
+                    'W_':       stats.rW.getAverage().toFixed(5),
+                    'T_':       stats.rT.getAverage().toFixed(5),
+                    'Var[X]':   stats.rX.getVariance().toFixed(5),
+                    'Var[Nq]':  stats.rNq.getVariance(currentTime).toFixed(5),
+                    'Var[W]':   stats.rW.getVariance().toFixed(5),
+                    'Var[T]':   stats.rT.getVariance().toFixed(5)
                 },
             });
+            console.log("arrivals", arrivals);
+            console.log("departures", departures);
+
+            stats.nextRound(currentTime);
         }
+        console.log(stats.X.getAverage(), stats.W.getAverage(), stats.T.getAverage());
+
         return rodadas;
     }
 }
