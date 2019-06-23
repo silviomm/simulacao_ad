@@ -957,6 +957,128 @@ if ((typeof module) == 'object' && module.exports) {
 );
 
 },{"crypto":1}],10:[function(require,module,exports){
+class Estimador {
+    constructor() {
+        this.estimadorMedia = 0
+        this.estimadorVariancia = 0
+        this.n = 0
+    }
+
+    acontece(x) {
+        this.estimadorMedia += x
+        this.estimadorVariancia += x ** 2
+        this.n += 1
+    }
+
+    calculaMedia() {
+        if (this.n < 1) {
+            return Infinity
+        }
+        return this.estimadorMedia/this.n
+    }
+
+    calculaVariancia() {
+        if (this.n < 2) {
+            return Infinity
+        }
+        return (this.estimadorVariancia / (this.n - 1))
+            - (this.estimadorMedia ** 2)/(this.n*(this.n-1))
+    }
+
+    calculaDesvioPadrao() {
+        return Math.sqrt(this.calculaVariancia())
+    }
+}
+
+module.exports = Estimador
+},{}],11:[function(require,module,exports){
+// Nossas funções auxiliares
+const utils = require('./utils');
+const Estimador = require('./estimador');
+
+module.exports = {
+    run: (inputs) => {
+
+        // media taxa de atendimento -> X_= 1
+        const mi = 1;
+        // taxa_chegada ->  rho = lambda*X_ -> lambda = rho
+        const lambda = inputs.rho;
+        // # rodadas
+        const nrodadas = inputs.rodadas;
+        // disciplina de atendimento
+        const disciplina = inputs.disciplina;
+        // tempo atual de simulação
+        let tempoSimulacao = 0;
+        // array de chegadas
+        let eventos = [];
+        // array de rodadas
+        let rodadas = [];
+        let r = 0;
+        // tempo maximo de simulacao
+        const tempoMax = 100;
+
+        tempoChegada = utils.getRandomExp(lambda);
+        tempoAtendimento = utils.getRandomExp(mi);
+        tempoSimulacao = tempoChegada;
+
+        // chegada primeira pessoa
+        eventos.push({
+            'chegada': tempoChegada,
+            'saida': tempoChegada + tempoAtendimento
+        });
+
+        for (let i = 0; i < nrodadas; i++) {
+            const estX = new Estimador();
+            const estW = new Estimador();
+            const estT = new Estimador();
+
+            while (true) {
+                tempoChegada = utils.getRandomExp(lambda);
+                tempoAtendimento = utils.getRandomExp(mi);
+
+                momentoChegada = tempoChegada + tempoSimulacao;
+                if (momentoChegada > tempoMax)
+                    break;
+
+                let momentoSaida;
+                let ultimoASair = eventos[eventos.length - 1].saida;
+                if (ultimoASair > momentoChegada) {
+                    momentoSaida = ultimoASair + tempoAtendimento
+                } else {
+                    momentoSaida = momentoChegada + tempoAtendimento
+                }
+
+                estX.acontece(tempoAtendimento);
+                if ((momentoSaida - (momentoChegada + tempoAtendimento)) <= 0)
+                    estW.acontece(0);
+                else
+                    estW.acontece(momentoSaida - momentoChegada - tempoAtendimento);
+                estT.acontece(momentoSaida - momentoChegada);
+                tempoSimulacao += tempoChegada;
+            }
+            rodadas.push({
+                'metricas': {
+                    'rodada': ++r,
+                    'X_': estX.calculaMedia(),
+                    'Nq_': '2do',
+                    'W_': estW.calculaMedia(),
+                    'T_': estT.calculaMedia(),
+                    'Var[X]': estX.calculaVariancia(),
+                    'Var[Nq]': '2do',
+                    'Var[W]': estW.calculaVariancia(),
+                    'Var[T]': estT.calculaVariancia()
+                },
+                'eventos': eventos,
+
+            })
+            tempoSimulacao = 0;
+
+        }
+
+        return rodadas;
+    }
+}
+},{"./estimador":10,"./utils":14}],12:[function(require,module,exports){
 module.exports = {
 
     // Adiciona uma linha ao final da tabela indicada.
@@ -964,7 +1086,7 @@ module.exports = {
         let table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
         let newRow = table.insertRow(-1);
         let dataRow = '';
-        for(const prop in obj) {
+        for (const prop in obj) {
             dataRow += `<td>${obj[prop]}</td>`
         }
         newRow.innerHTML = dataRow;
@@ -990,7 +1112,7 @@ module.exports = {
 
 
 }
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /* 
     Trabalho de AD - MAB515 2019/1
     Leonardo Dagnino
@@ -1002,96 +1124,25 @@ module.exports = {
 const interface = require('./interface');
 
 // Lógica principal do simulador
-const simulador = require('./simulador');
+const fcfs = require('./fcfs');
 
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
     interface.clearTable('metricas-table');
     const inputs = interface.getInputValues();
-    let eventos = simulador.run(inputs);
-    for (let i = 0; i < eventos.length; i++) {
-        const element = eventos[i];
-    
-        // apenas para preencher a tabela enqnt nao calcula realmente
-        element['a'] = 2.23534
-        element['b'] = 2.23534
-        element['c'] = 2.23534
-        element['d'] = 2.23534
-        element['e'] = 2.23534
-        element['f'] = 2.23534
-    
-        interface.addTableRow('metricas-table', element);
+    let rodadas = fcfs.run(inputs);
+    for (let i = 0; i < rodadas.length; i++) {
+        const r = rodadas[i];
+        interface.addTableRow('metricas-table', r.metricas);
     }
 });
-},{"./interface":10,"./simulador":12}],12:[function(require,module,exports){
-// Nossas funções auxiliares
-const utils = require('./utils');
-
-module.exports = {
-    run: (inputs) => {
-
-        // media taxa de atendimento -> X_= 1
-        const mi = 1;
-        // taxa_chegada ->  rho = lambda*X_ -> lambda = rho
-        const lambda = inputs.rho;
-        // # rodadas
-        const rodadas = inputs.rodadas;
-        // disciplina de atendimento
-        const disciplina = inputs.disciplina;
-        // tempo atual de simulação
-        let tempoSimulacao = 0;
-        // array de chegadas
-        let eventos = [];
-        // tempo maximo de simulacao
-        const tempoMax = 100;
-
-        tempoChegada = utils.getRandomExp(lambda);
-        tempoAtendimento = utils.getRandomExp(mi);
-        tempoSimulacao = tempoChegada;
-
-        // chegada primeira pessoa
-        eventos.push({
-            'rodada': 0,
-            'chegada': tempoChegada,
-            'saida': tempoChegada + tempoAtendimento
-        });
-
-        for (let i = 0; i < rodadas; i++) {
-            while (true) {
-                tempoChegada = utils.getRandomExp(lambda);
-                tempoAtendimento = utils.getRandomExp(mi);
-
-                momentoChegada = tempoChegada + tempoSimulacao;
-                if (momentoChegada > tempoMax)
-                    break;
-
-                let momentoSaida;
-                let ultimoASair = eventos[eventos.length - 1].saida;
-                if (ultimoASair > momentoChegada)
-                    momentoSaida = ultimoASair + tempoAtendimento
-                else
-                    momentoSaida = momentoChegada + tempoAtendimento
-
-                eventos.push({
-                    'rodada': i,
-                    'chegada': momentoChegada,
-                    'saida': momentoSaida
-                });
-                tempoSimulacao += tempoChegada;
-            }
-            tempoSimulacao = 0;
-        }
-
-        return eventos;
-    }
-}
-},{"./utils":13}],13:[function(require,module,exports){
+},{"./fcfs":11,"./interface":12}],14:[function(require,module,exports){
 const seedrandom = require('seedrandom');
 const randomSeed = seedrandom();
 
 module.exports = {
     getRandomExp: (rate) => {
-        return - Math.log(1 - randomSeed()) / rate;
+        return -Math.log(1 - randomSeed()) / rate;
     }
 }
-},{"seedrandom":2}]},{},[11]);
+},{"seedrandom":2}]},{},[13]);

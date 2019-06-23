@@ -5,9 +5,9 @@ class Estimador {
         this.n = 0
     }
 
-    acontece(n) {
-        this.estimadorMedia += n
-        this.estimadorVariancia += n ** 2
+    acontece(x) {
+        this.estimadorMedia += x
+        this.estimadorVariancia += x ** 2
         this.n += 1
     }
 
