@@ -9,7 +9,9 @@
 const interface = require('./interface');
 
 // Lógica principal do simulador
-const fcfs = require('./fcfs');
+//const fcfs = require('./fcfs');
+
+const acontece = require('./acontece');
 
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
