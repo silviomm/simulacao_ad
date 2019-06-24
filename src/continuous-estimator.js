@@ -3,7 +3,7 @@ class ContinuousEstimator {
         this.sum = 0;
         this.squareSum = 0;
         this.startTime = startTime;
-        this.lastTime = 0;
+        this.lastTime = startTime;
     }
 
     sample(time, value) {

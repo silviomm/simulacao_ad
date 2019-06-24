@@ -173,8 +173,8 @@ module.exports = {
             let queueHead = queue.peek();
             let serverState = server.getState();
 
-            while (arrivals < 5000) {
-            // while (departures < 5000) {
+            //while (arrivals < 5000) {
+            while (departures < 5000) {
                 if (serverState.status == 'empty') {
                     if (queueHead) { // se servidor esta vazio, e ha alguem na fila
                         //console.log("fila pro servidor", currentTime);
