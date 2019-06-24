@@ -29,6 +29,14 @@ class DiscreteEstimator {
     getStdDev() {
         return Math.sqrt(this.getVariance());
     }
+
+    getTStudentConfidenceInterval() {
+        let diff = 1.96 * this.getStdDev() / sqrt(this.n);
+        return { 
+            high: this.getAverage() + diff,
+            low: this.getAverage() - diff
+        } 
+    }
 }
 
 module.exports = DiscreteEstimator;
