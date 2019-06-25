@@ -102,6 +102,7 @@ class Stats {
     constructor() {
         this.resetRoundEstimators(0);
 
+        this.rNq = new ContinuousEstimator();
         this.X = new DiscreteEstimator();
         this.W = new DiscreteEstimator();
         this.T = new DiscreteEstimator();
@@ -112,7 +113,7 @@ class Stats {
         this.rX = new DiscreteEstimator();
         this.rW = new DiscreteEstimator();
         this.rT = new DiscreteEstimator();
-        this.rNq = new ContinuousEstimator(time);
+        // this.rNq = new ContinuousEstimator(time);
     }
 
     fromElement(elt) {
