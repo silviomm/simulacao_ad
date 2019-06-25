@@ -253,12 +253,12 @@ module.exports = {
                     }
                 }
             }
-            console.log("arrivals", arrivals);
-            console.log("departures", departures);
+            // console.log("arrivals", arrivals);
+            // console.log("departures", departures);
 
             stats.nextRound(currentTime);
         }
-        
+
         // média das médias 
         console.log(stats.X.getAverage(), stats.W.getAverage(), stats.T.getAverage());
 
