@@ -100,6 +100,8 @@ class ExponentialServer {
 
 class Stats {
     constructor() {
+        this.round = 0;
+        this.perRound = [];
         this.resetRoundEstimators(0);
 
         this.X = new DiscreteEstimator();
@@ -109,6 +111,28 @@ class Stats {
     }
 
     resetRoundEstimators(time) {
+        // salvando as metricas de cada rodada antes de resetar(menos no tempo 0 que é a inicialização)
+        if (time != 0)
+            this.perRound.push({
+                'round': this.round,
+                'X': {
+                    'avg': this.rX.getAverage().toFixed(5),
+                    'var': this.rX.getVariance().toFixed(5)
+                },
+                'W': {
+                    'avg': this.rW.getAverage().toFixed(5),
+                    'var': this.rW.getVariance().toFixed(5)
+                },
+                'T': {
+                    'avg': this.rT.getAverage().toFixed(5),
+                    'var': this.rT.getVariance().toFixed(5)
+                },
+                'Nq': {
+                    'avg': this.rNq.getAverage(time).toFixed(5),
+                    'var': this.rNq.getVariance(time).toFixed(5)
+                }
+            });
+
         this.rX = new DiscreteEstimator();
         this.rW = new DiscreteEstimator();
         this.rT = new DiscreteEstimator();
@@ -126,6 +150,8 @@ class Stats {
     }
 
     nextRound(time) {
+        this.round += 1;
+
         this.X.sample(this.rX.getAverage());
         this.W.sample(this.rW.getAverage());
         this.T.sample(this.rT.getAverage());
@@ -227,26 +253,15 @@ module.exports = {
                     }
                 }
             }
-            rodadas.push({
-                'metricas': {
-                    'rodada':   i,
-                    'X_':       stats.rX.getAverage().toFixed(5),
-                    'Nq_':      stats.rNq.getAverage(currentTime).toFixed(5),
-                    'W_':       stats.rW.getAverage().toFixed(5),
-                    'T_':       stats.rT.getAverage().toFixed(5),
-                    'Var[X]':   stats.rX.getVariance().toFixed(5),
-                    'Var[Nq]':  stats.rNq.getVariance(currentTime).toFixed(5),
-                    'Var[W]':   stats.rW.getVariance().toFixed(5),
-                    'Var[T]':   stats.rT.getVariance().toFixed(5)
-                },
-            });
             console.log("arrivals", arrivals);
             console.log("departures", departures);
 
             stats.nextRound(currentTime);
         }
+        
+        // média das médias 
         console.log(stats.X.getAverage(), stats.W.getAverage(), stats.T.getAverage());
 
-        return rodadas;
+        return stats;
     }
 }

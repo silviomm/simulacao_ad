@@ -19,10 +19,12 @@ document.getElementById('run-button').addEventListener('click', () => {
 function executa() {
     interface.clearTable('metricas-table');
     const inputs = interface.getInputValues();
-    let rodadas = acontece.run(inputs);
-    for (let i = 0; i < rodadas.length; i++) {
-        const r = rodadas[i];
-        interface.addTableRow('metricas-table', r.metricas);
+    let stats = acontece.run(inputs);
+    for (let i = 0; i < stats.perRound.length; i++) {
+        const s = stats.perRound[i];
+        // ordem tabela html: (avg e var)(x, w, t, nq)
+        let statsValues = [s.round, s.X.avg, s.X.var, s.W.avg, s.W.var, s.T.avg, s.T.var, s.Nq.avg, s.Nq.var];
+        interface.addTableRow('metricas-table', statsValues);
     }
 
 }

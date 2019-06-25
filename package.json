@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "browserify": "^16.2.3",
+    "inv-chisquare-cdf": "^1.0.0",
     "seedrandom": "^3.0.1"
   }
 }

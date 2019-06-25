@@ -35,7 +35,15 @@ class DiscreteEstimator {
         return { 
             high: this.getAverage() + diff,
             low: this.getAverage() - diff
-        } 
+        }
+    }
+
+    getChi2ConfidenceInterval() {
+        const alpha = 0.05;
+        let chi2Low = Utils.getInverseChiSquaredCDF(1 - alpha/2, this.n - 1);
+        let chi2Up  = Utils.getInverseChiSquaredCDF(alpha/2,     this.n - 1);
+        
+        
     }
 }
 
