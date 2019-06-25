@@ -2,6 +2,9 @@ const utils = require('./utils');
 const DiscreteEstimator = require('./discrete-estimator');
 const ContinuousEstimator = require('./continuous-estimator');
 
+const LCFSQueue = require('./Queues/lcfs');
+const FCFSQueue = require('./Queues/fcfs');
+
 class ArrivalGenerator {
     constructor(rate, time = 0) {
         this.rate = rate;
@@ -11,50 +14,6 @@ class ArrivalGenerator {
     getNext() {
         this.time += utils.getRandomExp(this.rate);
         return this.time;
-    }
-}
-
-class LCFSQueue {
-    constructor() {
-        this.queue = []
-    }
-
-    put(elt) {
-        return this.queue.push(elt);
-    }
-
-    peek() {
-        return this.queue[0];
-    }
-
-    get() {
-        return this.queue.pop();
-    }
-
-    length() {
-        return this.queue.length;
-    }
-}
-
-class FCFSQueue {
-    constructor() {
-        this.queue = [];
-    }
-
-    put(elt) {
-        return this.queue.unshift(elt);
-    }
-
-    peek() {
-        return this.queue[this.queue.length - 1];
-    }
-
-    get() {
-        return this.queue.pop();
-    }
-
-    length() {
-        return this.queue.length;
     }
 }
 
