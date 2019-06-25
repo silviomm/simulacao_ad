@@ -31,7 +31,7 @@ class DiscreteEstimator {
     }
 
     getTStudentConfidenceInterval() {
-        let diff = 1.96 * this.getStdDev() / sqrt(this.n);
+        let diff = 1.96 * this.getStdDev() / Math.sqrt(this.n);
         return { 
             high: this.getAverage() + diff,
             low: this.getAverage() - diff
@@ -43,7 +43,7 @@ class DiscreteEstimator {
         let chi2Low = Utils.getInverseChiSquaredCDF(1 - alpha/2, this.n - 1);
         let chi2Up  = Utils.getInverseChiSquaredCDF(alpha/2,     this.n - 1);
         
-        
+        return '2do';
     }
 }
 
