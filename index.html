@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-    
+
 <head>
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -129,7 +129,30 @@
                         </div>
                     </div>
                 </div>
-                <!-- TABELA -->
+                <!-- TABELA INTERVALO DE CONFIANÇA TOTAL-->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" style="text-align: center">Intervalo de Confiança
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="ic-table" width="100%" cellspacing="0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="text-align: center">Parâmetro</th>
+                                        <th style="text-align: center">Intervalo</th>
+                                        <th style="text-align: center">Precisão</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ic-table-tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- FIM TABELA -->
+                <!-- TABELA METRICAS POR RODADA-->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary" style="text-align: center">Métricas
@@ -140,15 +163,15 @@
                             <table class="table table-bordered" id="metricas-table" width="100%" cellspacing="0">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Rodada</th>
-                                        <th style="text-decoration: overline">X</th>
-                                        <th>V[X]</th>
-                                        <th style="text-decoration: overline">W</th>
-                                        <th>V[W]</th>
-                                        <th style="text-decoration: overline">T</th>
-                                        <th>V[T]</th>
-                                        <th style="text-decoration: overline">Nq</th>
-                                        <th>V[Nq]</th>
+                                        <th style="text-align: center">Rodada</th>
+                                        <th style="text-align: center; text-decoration: overline">X</th>
+                                        <th style="text-align: center">V[X]</th>
+                                        <th style="text-align: center; text-decoration: overline">W</th>
+                                        <th style="text-align: center">V[W]</th>
+                                        <th style="text-align: center; text-decoration: overline">T</th>
+                                        <th style="text-align: center">V[T]</th>
+                                        <th style="text-align: center; text-decoration: overline">Nq</th>
+                                        <th style="text-align: center">V[Nq]</th>
                                     </tr>
                                 </thead>
                                 <tbody id="metricas-table-tbody">

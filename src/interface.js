@@ -6,7 +6,7 @@ module.exports = {
         let newRow = table.insertRow(-1);
         let dataRow = '';
         for (const prop in obj) {
-            dataRow += `<td>${obj[prop]}</td>`
+            dataRow += `<td style="text-align: center">${obj[prop]}</td>`
         }
         newRow.innerHTML = dataRow;
     },
