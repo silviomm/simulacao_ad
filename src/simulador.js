@@ -181,7 +181,6 @@ function exitServer(server) {
 
 module.exports = {
     run: (inputs) => {
-        let foo = 0;
         let cont = 0;
         let numRodadas = inputs.rodadas;
         let numFregueses = 5000;
@@ -208,6 +207,8 @@ module.exports = {
         let stats = new Stats();
 
         let currentTime = 0;
+
+        let departuresTotal = 0;
 
         for (let i = 0; i < nrodadas; i++) {
             let arrivals = 0;
@@ -268,10 +269,11 @@ module.exports = {
                         serverState = server.getState();
 
                         departures += 1;
-                        if ((((departures+1) % intervalo === 0) && ((departures+1) <= numFregueses * numRodadas))) {
-                            console.log('iter ' , cont);
+                        departuresTotal +=1 ;
+                        if ((((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= numFregueses * numRodadas))) {
+                          //  console.log('iter ' , cont);
                             nqIter.push(stats.rNq.getAverage(currentTime).toFixed(5));
-                            console.log('tam', nqIter.length);
+                            //console.log('tam', nqIter.length);
                             cont++;
                             
                         }
