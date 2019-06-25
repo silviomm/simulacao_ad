@@ -1,3 +1,5 @@
+const Graphics = require('./graphics');
+
 class Interface {
 
     // Adiciona uma linha ao final da tabela indicada.
@@ -44,6 +46,9 @@ class Interface {
     // Gera Grafico
     static geraGrafico(nTotal, dataPerTime, nPoints, chartId) {
 
+        Graphics.createChart(nTotal, dataPerTime, nPoints, 'myAreaChart');
+        Graphics.createChart(nTotal, dataPerTime, nPoints, 'myAreaChart2');
+
         let labelArray = [];
         //let interval = parseInt(nTotal / nPoints, 10); // De quantos em quantos clientes os dados foram coletados
         let interval = nTotal / nPoints;
@@ -59,6 +64,8 @@ class Interface {
             labels: labelArray,
             series: [dataPerTime],
         };
+
+
 
         const optionsRhoChart = {
 

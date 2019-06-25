@@ -5,9 +5,11 @@
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    
-    <link href="css/chartist.min.css" rel="stylesheet" >
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link href="css/chartist.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -110,6 +112,7 @@
 
                 </div>
                 <!-- END INPUTS -->
+
                 <!-- PLAY BUTTON -->
                 <div class="row">
                     <div class="col-12 text-center">
@@ -121,13 +124,57 @@
                     </div>
                 </div>
                 <!-- END PLAY BUTTON -->
-                <div class="modal fade bd-example-modal-lg" tabindex="-1">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content" style="width: 48px">
-                            <span class="fa fa-spinner fa-spin fa-3x"></span>
+                <hr class="sidebar-divider">
+                <!-- GRAFICOS -->
+                <!-- NQxFREGUESES -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Média do Tamanho da fila(Nq) x Número de
+                                    Fregueses</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <canvas id="myAreaChart"></canvas>
+                                </div>
+                                <hr>
+                                footer
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Média do Tamanho da fila(Nq) x Número de
+                                    Fregueses</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <canvas id="myAreaChart2"></canvas>
+                                </div>
+                                <hr>
+                                footer
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div style="display: none" class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="card-header card-chart" data-background-color="green">
+                            <div class="ct-chart" id="chartNq1"></div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="title">Média do Tamanho da fila 01 (Nq1) x Número de Fregueses</h4>
+                            <p class="category">A linha <strong>vermelha</strong> representa a fase
+                                <strong>transiente</strong>, enquanto a branca representa as amostras usadas nas
+                                coletas.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END NQxFREGUESES -->
+
+                <!-- END GRAFICOS -->
                 <!-- TABELA INTERVALO DE CONFIANÇA TOTAL-->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -150,7 +197,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- FIM TABELA -->
+                <!-- FIM TABELA IC-->
                 <!-- TABELA METRICAS POR RODADA-->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -179,24 +226,16 @@
                         </div>
                     </div>
                 </div>
-                <!-- FIM TABELA -->
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card">
-                        <div class="card-header card-chart" data-background-color="green">
-                            <div class="ct-chart" id="chartNq1"></div>
-                        </div>
-                        <div class="card-content">
-                            <h4 class="title">Média do Tamanho da fila 01 (Nq1) x Número de Fregueses</h4>
-                            <p class="category">A linha <strong>vermelha</strong> representa a fase <strong>transiente</strong>, enquanto a branca representa as amostras usadas nas coletas.</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- FIM TABELA METRICAS-->
             </div>
         </div>
     </div>
 
 
 </body>
+<!-- Page level plugins -->
+<script src="vendor/jquery.min.js"></script>
+<script src="vendor/Chart.min.js"></script>
 <script src="bundle.js"></script>
 <script src="js/chartist.min.js"></script>
 
