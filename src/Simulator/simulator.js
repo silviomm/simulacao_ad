@@ -1,61 +1,10 @@
-const utils = require('./utils');
+const LCFSQueue = require('../Queues/lcfs');
+const FCFSQueue = require('../Queues/fcfs');
 
-const LCFSQueue = require('./Queues/lcfs');
-const FCFSQueue = require('./Queues/fcfs');
+const StatsCollector = require('../Statistics/stats-collector');
 
-const StatsCollector = require('./Statistics/stats-collector');
-
-class ArrivalGenerator {
-    constructor(rate, time = 0) {
-        this.rate = rate;
-        this.time = time;
-    }
-
-    getNext() {
-        this.time += utils.getRandomExp(this.rate);
-        return this.time;
-    }
-}
-
-class ExponentialServer {
-    constructor(rate) {
-        this.rate = rate;
-        this.exitTime = Infinity;
-        this.currentElement = null;
-    }
-
-    enter(time, elt) {
-        elt.entryTime = time;
-        elt.exitTime = time + utils.getRandomExp(this.rate);
-        this.currentElement = elt;
-        this.exitTime = elt.exitTime;
-    }
-
-    getState() {
-        if (this.currentElement != null) {
-            return {
-                status: 'full',
-                exitTime: this.exitTime,
-            };
-        } else {
-            return {
-                status: 'empty'
-            };
-        }
-    }
-
-    getExitTime() {
-        return this.exitTime;
-    }
-
-    exit() {
-        let out = this.currentElement;
-        this.currentElement = null;
-        this.exitTime = Infinity;
-
-        return out;
-    }
-}
+const ExponentialServer = require('./exponential-server');
+const ArrivalGenerator = require('./arrival-generator');
 
 function queueToServer(time, queue, server) {
     let elt = queue.get();

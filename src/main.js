@@ -9,7 +9,7 @@
 const interface = require('./interface');
 
 // Lógica principal do simulador
-const acontece = require('./simulador');
+const simulator = require('./Simulator/simulator');
 
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
@@ -17,7 +17,7 @@ document.getElementById('run-button').addEventListener('click', () => {
 });
 
 function executa() {
-    let result = acontece.run(interface.getInputValues());
+    let result = simulator.run(interface.getInputValues());
 
     // tabelas
     interface.fillICTable(result.stats);
