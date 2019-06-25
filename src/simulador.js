@@ -154,8 +154,25 @@ function exitServer(server) {
 
 module.exports = {
     run: (inputs) => {
+        let foo = 0;
+        let cont = 0;
+        let numRodadas = inputs.rodadas;
+        let numFregueses = 5000;
+    
+    
+        let numPontos = 200;
+        if(numFregueses*numRodadas < numPontos)
+            numPontos = numFregueses*numRodadas;
+    
+        let intervalo = parseInt((numFregueses*numRodadas) / numPontos, 10);
+    
+        numPontos = parseInt((numFregueses*numRodadas) / intervalo, 10);
+
+        console.log('init' , numPontos, intervalo, numFregueses)
+
         const nrodadas = inputs.rodadas;
         let rodadas = [];
+        let nqIter = [];
         let r = 0;
 
         let generator = new ArrivalGenerator(inputs.rho);
@@ -226,6 +243,18 @@ module.exports = {
                         departures += 1;
                     }
                 }
+                // console.log(departures)
+                if((departures+1) % intervalo == 0){
+                    foo++;
+                }
+                if ((((departures+1) % intervalo === 0) && ((departures+1) <= numFregueses * numRodadas))) {
+                    console.log('iter ' , cont);
+                    nqIter.push(stats.rNq.getAverage(currentTime).toFixed(5));
+                    console.log('tam', nqIter.length);
+                    cont++;
+                    
+                }
+    
             }
             rodadas.push({
                 'metricas': {
@@ -245,8 +274,15 @@ module.exports = {
 
             stats.nextRound(currentTime);
         }
+        let resultado = [];
+        resultado.push(rodadas);
+        resultado.push(nqIter);
+        resultado.push(numPontos);
+        resultado.push(numPontos*intervalo);
+        console.log('here', nqIter.length);
+        console.log(foo)
         console.log(stats.X.getAverage(), stats.W.getAverage(), stats.T.getAverage());
 
-        return rodadas;
+        return resultado;
     }
 }

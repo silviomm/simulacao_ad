@@ -5,13 +5,12 @@
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    
+    <link href="css/chartist.min.css" rel="stylesheet" >
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="css/modal.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -158,6 +157,17 @@
                     </div>
                 </div>
                 <!-- FIM TABELA -->
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="card-header card-chart" data-background-color="green">
+                            <div class="ct-chart" id="chartNq1"></div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="title">Média do Tamanho da fila 01 (Nq1) x Número de Fregueses</h4>
+                            <p class="category">A linha <strong>vermelha</strong> representa a fase <strong>transiente</strong>, enquanto a branca representa as amostras usadas nas coletas.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -165,6 +175,6 @@
 
 </body>
 <script src="bundle.js"></script>
-
+<script src="js/chartist.min.js"></script>
 
 </html>
