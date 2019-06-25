@@ -104,6 +104,7 @@ class Stats {
         this.perRound = [];
         this.resetRoundEstimators(0);
 
+        this.rNq = new ContinuousEstimator();
         this.X = new DiscreteEstimator();
         this.W = new DiscreteEstimator();
         this.T = new DiscreteEstimator();
@@ -136,7 +137,7 @@ class Stats {
         this.rX = new DiscreteEstimator();
         this.rW = new DiscreteEstimator();
         this.rT = new DiscreteEstimator();
-        this.rNq = new ContinuousEstimator(time);
+        // this.rNq = new ContinuousEstimator(time);
     }
 
     fromElement(elt) {
@@ -180,8 +181,25 @@ function exitServer(server) {
 
 module.exports = {
     run: (inputs) => {
+        let foo = 0;
+        let cont = 0;
+        let numRodadas = inputs.rodadas;
+        let numFregueses = 5000;
+    
+    
+        let numPontos = 200;
+        if(numFregueses*numRodadas < numPontos)
+            numPontos = numFregueses*numRodadas;
+    
+        let intervalo = parseInt((numFregueses*numRodadas) / numPontos, 10);
+    
+        numPontos = parseInt((numFregueses*numRodadas) / intervalo, 10);
+
+        console.log('init' , numPontos, intervalo, numFregueses)
+
         const nrodadas = inputs.rodadas;
         let rodadas = [];
+        let nqIter = [];
         let r = 0;
 
         let generator = new ArrivalGenerator(inputs.rho);
@@ -252,16 +270,34 @@ module.exports = {
                         departures += 1;
                     }
                 }
+                // console.log(departures)
+                if((departures+1) % intervalo == 0){
+                    foo++;
+                }
+                if ((((departures+1) % intervalo === 0) && ((departures+1) <= numFregueses * numRodadas))) {
+                    console.log('iter ' , cont);
+                    nqIter.push(stats.rNq.getAverage(currentTime).toFixed(5));
+                    console.log('tam', nqIter.length);
+                    cont++;
+                    
+                }
+    
             }
             // console.log("arrivals", arrivals);
             // console.log("departures", departures);
 
             stats.nextRound(currentTime);
         }
-
         // média das médias 
-        console.log(stats.X.getAverage(), stats.W.getAverage(), stats.T.getAverage());
+        // console.log(stats.X.getAverage(), stats.W.getAverage(), stats.T.getAverage());
 
-        return stats;
+        let resultado = {
+            'stats': stats,
+            'nqIter': nqIter,
+            'numPontos': numPontos,
+            'totalId': numPontos*intervalo
+        };
+
+        return resultado;
     }
 }
