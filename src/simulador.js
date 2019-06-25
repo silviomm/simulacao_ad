@@ -268,19 +268,17 @@ module.exports = {
                         serverState = server.getState();
 
                         departures += 1;
+                        if ((((departures+1) % intervalo === 0) && ((departures+1) <= numFregueses * numRodadas))) {
+                            console.log('iter ' , cont);
+                            nqIter.push(stats.rNq.getAverage(currentTime).toFixed(5));
+                            console.log('tam', nqIter.length);
+                            cont++;
+                            
+                        }
                     }
                 }
-                // console.log(departures)
-                if((departures+1) % intervalo == 0){
-                    foo++;
-                }
-                if ((((departures+1) % intervalo === 0) && ((departures+1) <= numFregueses * numRodadas))) {
-                    console.log('iter ' , cont);
-                    nqIter.push(stats.rNq.getAverage(currentTime).toFixed(5));
-                    console.log('tam', nqIter.length);
-                    cont++;
-                    
-                }
+              
+              
     
             }
             // console.log("arrivals", arrivals);
