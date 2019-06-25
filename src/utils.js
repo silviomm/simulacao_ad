@@ -1,5 +1,5 @@
 const seedrandom = require('seedrandom');
-const random = seedrandom('leodaocu');
+const random = seedrandom('semente');
 
 module.exports = {
     getRandomExp: (rate) => {
