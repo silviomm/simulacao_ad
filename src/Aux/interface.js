@@ -1,4 +1,4 @@
-const Graphics = require('./graphics');
+const Charts = require('./charts');
 
 class Interface {
 
@@ -43,11 +43,39 @@ class Interface {
         }
     }
 
+    // Cria grafico canvas com parte transient
+    static createLineChart(nTotal, dataPerTime, nPoints, chartId, chartAreaId) {
+        
+        // remove canvas antigo
+        let oldcanv = document.getElementById(chartId);
+        let canvarea = document.getElementById(chartAreaId);
+        canvarea.removeChild(oldcanv);
+
+        // cria canvas novo
+        let newcanv = document.createElement('canvas');
+        newcanv.id = chartId;
+        canvarea.appendChild(newcanv);
+
+        let labelArray = [];
+        let interval = nTotal / nPoints;
+
+        for (let i = 0; i < nPoints; i++) {
+            labelArray[i] = i * interval;
+        }
+
+        const transientPoints = Math.round(nPoints / 7);
+
+        Charts.createLineChart(
+            labelArray, {
+                'transient': dataPerTime.slice(0, transientPoints),
+                'normal': Array(transientPoints - 1).fill(null).concat(dataPerTime.slice(transientPoints, nPoints))
+            },
+            chartId
+        );
+    }
+
     // Gera Grafico
     static geraGrafico(nTotal, dataPerTime, nPoints, chartId) {
-
-        Graphics.createChart(nTotal, dataPerTime, nPoints, 'myAreaChart');
-        Graphics.createChart(nTotal, dataPerTime, nPoints, 'myAreaChart2');
 
         let labelArray = [];
         //let interval = parseInt(nTotal / nPoints, 10); // De quantos em quantos clientes os dados foram coletados
@@ -64,8 +92,6 @@ class Interface {
             labels: labelArray,
             series: [dataPerTime],
         };
-
-
 
         const optionsRhoChart = {
 

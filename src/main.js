@@ -22,7 +22,8 @@ document.getElementById('run-button').addEventListener('click', () => {
     interface.fillMetricasTable(result.stats);
     
     // graficos
-    interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
-    interface.createChart(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
-
+    // interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
+    interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
+    interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-2', 'chart-area-2');
+    
 });
