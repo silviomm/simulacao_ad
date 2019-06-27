@@ -74,51 +74,6 @@ class Interface {
         );
     }
 
-    // Gera Grafico
-    static geraGrafico(nTotal, dataPerTime, nPoints, chartId) {
-
-        let labelArray = [];
-        //let interval = parseInt(nTotal / nPoints, 10); // De quantos em quantos clientes os dados foram coletados
-        let interval = nTotal / nPoints;
-
-        for (let i = 0; i < nPoints; i++) {
-            labelArray[i] = i * interval;
-        }
-
-        let labelQuantity = parseInt(nPoints / 10, 10);
-
-
-        const dataRhoChart = {
-            labels: labelArray,
-            series: [dataPerTime],
-        };
-
-        const optionsRhoChart = {
-
-            axisX: {
-                labelInterpolationFnc: function skipLabels(value, index) {
-                    return ((index) % labelQuantity) === 0 ? (value) : null;
-                }
-            },
-            axisY: {
-                low: 0,
-            },
-            lineSmooth: Chartist.Interpolation.cardinal({
-                tension: 0
-            }),
-            height: 200,
-            chartPadding: {
-                top: 30,
-                right: 5,
-                bottom: 0,
-                left: 0
-            },
-            showPoint: false,
-        };
-
-        new Chartist.Line(chartId, dataRhoChart, optionsRhoChart);
-    }
-
 
     // Preenche tabela de IC
     static fillICTable(stats) {

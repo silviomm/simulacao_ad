@@ -16,14 +16,19 @@ const simulator = require('./Simulator/simulator');
 document.getElementById('run-button').addEventListener('click', () => {
     
     let result = simulator.run(interface.getInputValues());
+
+    console.log(result.wIter);
     
     // tabelas
     interface.fillICTable(result.stats);
     interface.fillMetricasTable(result.stats);
+
+    console.log(result.nqIter);
+    console.log(result.wIter);
     
     // graficos
     // interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
     interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
-    interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-2', 'chart-area-2');
+    interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
     
 });

@@ -25,9 +25,8 @@ function exitServer(server) {
 
 module.exports = {
     run: (inputs) => {
-        let cont = 0;
         let numRodadas = inputs.rodadas;
-        let numFregueses = 5000;
+        let numFregueses = 200;
     
     
         let numPontos = 200;
@@ -41,9 +40,8 @@ module.exports = {
         console.log('init' , numPontos, intervalo, numFregueses)
 
         const nrodadas = inputs.rodadas;
-        let rodadas = [];
         let nqIter = [];
-        let r = 0;
+        let wIter = [];
 
         let generator = new ArrivalGenerator(inputs.rho);
         let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
@@ -115,17 +113,15 @@ module.exports = {
                         departures += 1;
                         departuresTotal +=1 ;
                         if ((((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= numFregueses * numRodadas))) {
-                          //  console.log('iter ' , cont);
+                            wIter.push(stats.rW.getAverage().toFixed(5));
                             nqIter.push(stats.rNq.getAverage(currentTime).toFixed(5));
-                            //console.log('tam', nqIter.length);
-                            cont++;
                             
                         }
                     }
                 }
               
               
-    
+                
             }
             // console.log("arrivals", arrivals);
             // console.log("departures", departures);
@@ -138,6 +134,7 @@ module.exports = {
         let resultado = {
             'stats': stats,
             'nqIter': nqIter,
+            'wIter': wIter,
             'numPontos': numPontos,
             'totalId': numPontos*intervalo
         };
