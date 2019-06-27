@@ -80,19 +80,21 @@ class Interface {
         this.clearTable('ic-table');
         // ordem no html: parâmetro, ic, precisão
         // E[W]
+        let icW = stats.W.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'E[W]',
-                `Entre <b>${stats.W.getTStudentConfidenceInterval().high}</b> e <b>${stats.W.getTStudentConfidenceInterval().low}</b>`,
-                '2do'
+                `Entre <b>${icW.high}</b> e <b>${icW.low}</b>`,
+                `${(icW.precision).toFixed(5)}%`
             ],
         )
         // Var[W] tstudent
+        let icvW = stats.vW.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'Var[W] t-student',
-                `Entre <b>${stats.vW.getTStudentConfidenceInterval().high}</b> e <b>${stats.vW.getTStudentConfidenceInterval().low}<b>`,
-                '2do'
+                `Entre <b>${icvW.high}</b> e <b>${icvW.low}<b>`,
+                `${(icvW.precision).toFixed(5)}%`
             ],
         )
         // Var[W] chi2
@@ -104,19 +106,21 @@ class Interface {
             ],
         )
         // E[Nq]
+        let icNq = stats.Nq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'E[Nq]',
-                `Entre <b>${stats.Nq.getTStudentConfidenceInterval().high}</b> e <b>${stats.Nq.getTStudentConfidenceInterval().low}</b>`,
-                '2do'
+                `Entre <b>${icNq.high}</b> e <b>${icNq.low}</b>`,
+                `${(icNq.precision).toFixed(5)}%`
             ],
         )
         // Var[Nq] tstudent
+        let icvNq = stats.vNq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'Var[Nq] t-student',
-                `Entre <b>${stats.vNq.getTStudentConfidenceInterval().high}</b> e <b>${stats.vNq.getTStudentConfidenceInterval().low}</b>`,
-                '2do'
+                `Entre <b>${icvNq.high}</b> e <b>${icvNq.low}</b>`,
+                `${(icvNq.precision).toFixed(5)}%`
             ],
         )
         // Var[Nq] chi2

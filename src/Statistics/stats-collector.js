@@ -7,8 +7,8 @@ class StatsCollector {
         this.perRound = [];
         this.resetRoundEstimators(0);
 
-        this.rNq = new ContinuousEstimator();
-        this.rW = new DiscreteEstimator();
+        this.rrNq = new ContinuousEstimator();
+        this.rrW = new DiscreteEstimator();
         this.initEstimators();
     }
 
@@ -55,19 +55,22 @@ class StatsCollector {
 
         // reset coletores de estatisticas dos rounds
         this.rX = new DiscreteEstimator();
-        //this.rW = new DiscreteEstimator();
+        this.rW = new DiscreteEstimator();
         this.rT = new DiscreteEstimator();
-        // this.rNq = new ContinuousEstimator(time);
+        this.rNq = new ContinuousEstimator(time);
     }
 
     fromElement(elt) {
         this.rX.sample(elt.exitTime - elt.entryTime);
         this.rW.sample(elt.entryTime - elt.arrivalTime);
         this.rT.sample(elt.exitTime - elt.arrivalTime);
+        
+        this.rrW.sample(elt.entryTime - elt.arrivalTime);
     }
 
     updateQueue(time, nq) {
         this.rNq.sample(time, nq);
+        this.rrNq.sample(time, nq);
     }
 
     nextRound(time) {

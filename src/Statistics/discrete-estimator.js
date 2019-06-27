@@ -33,10 +33,12 @@ class DiscreteEstimator {
     }
 
     getTStudentConfidenceInterval() {
-        let diff = 1.96 * this.getStdDev() / Math.sqrt(this.n);
+        let diff = (1.96 * this.getStdDev()) / Math.sqrt(this.n);
+
         return {
             high: this.getAverage() + diff,
-            low: this.getAverage() - diff
+            low: this.getAverage() - diff,
+            precision: (diff/this.getAverage())*100,
         }
     }
 

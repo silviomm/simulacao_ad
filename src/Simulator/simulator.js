@@ -26,7 +26,7 @@ function exitServer(server) {
 module.exports = {
     run: (inputs) => {
         let numRodadas = inputs.rodadas;
-        let numFregueses = 200;
+        let numFregueses = 3000;
     
     
         let numPontos = 200;
@@ -61,7 +61,7 @@ module.exports = {
             let serverState = server.getState();
 
             //while (arrivals < 5000) {
-            while (departures < 5000) {
+            while (departures < numFregueses) {
                 if (serverState.status == 'empty') {
                     if (queueHead) { // se servidor esta vazio, e ha alguem na fila
                         //console.log("fila pro servidor", currentTime);
@@ -113,8 +113,8 @@ module.exports = {
                         departures += 1;
                         departuresTotal +=1 ;
                         if ((((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= numFregueses * numRodadas))) {
-                            wIter.push(stats.rW.getAverage().toFixed(5));
-                            nqIter.push(stats.rNq.getAverage(currentTime).toFixed(5));
+                            wIter.push(stats.rrW.getAverage().toFixed(5));
+                            nqIter.push(stats.rrNq.getAverage(currentTime).toFixed(5));
                             
                         }
                     }
