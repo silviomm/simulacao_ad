@@ -20,19 +20,6 @@ document.getElementById('run-button').addEventListener('click', () => {
     // tabelas
     interface.fillICTable(result.stats);
     interface.fillMetricasTable(result.stats);
-
-    // result.stats.perRound.map(p => console.log(p.X.avg));
-
-    var sum = 0;
-    for (let i = 0; i < interface.getInputValues().rodadas; i++) {
-        sum += parseFloat(result.stats.perRound[i].W.var);
-    }
-    console.log(`sum ${sum}`)
-    console.log(`oie `, sum/interface.getInputValues().rodadas);
-
-    // console.log(result.stats.perRound.map(r => r.W.var).reduce((p, c) => p+c))
-    // console.log();
-
     interface.addTableRow('metricas-table', {
         'rodada': result.stats.round,
         'X': result.stats.X.getAverage().toFixed(5),
@@ -48,6 +35,6 @@ document.getElementById('run-button').addEventListener('click', () => {
     // graficos
     // interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
     interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
-    interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-2', 'chart-area-2');
+    interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
     
 });

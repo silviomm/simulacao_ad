@@ -8,6 +8,7 @@ class StatsCollector {
         this.resetRoundEstimators(0);
 
         this.rNq = new ContinuousEstimator();
+        this.rW = new DiscreteEstimator();
         this.initEstimators();
     }
 
@@ -54,7 +55,7 @@ class StatsCollector {
 
         // reset coletores de estatisticas dos rounds
         this.rX = new DiscreteEstimator();
-        this.rW = new DiscreteEstimator();
+        //this.rW = new DiscreteEstimator();
         this.rT = new DiscreteEstimator();
         // this.rNq = new ContinuousEstimator(time);
     }
