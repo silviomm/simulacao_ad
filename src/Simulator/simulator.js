@@ -27,7 +27,7 @@ module.exports = {
     run: (inputs) => {
         let cont = 0;
         let numRodadas = inputs.rodadas;
-        let numFregueses = 5000;
+        let numFregueses = 200;
     
     
         let numPontos = 200;

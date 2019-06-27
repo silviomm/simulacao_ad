@@ -20,6 +20,30 @@ document.getElementById('run-button').addEventListener('click', () => {
     // tabelas
     interface.fillICTable(result.stats);
     interface.fillMetricasTable(result.stats);
+
+    // result.stats.perRound.map(p => console.log(p.X.avg));
+
+    var sum = 0;
+    for (let i = 0; i < interface.getInputValues().rodadas; i++) {
+        sum += parseFloat(result.stats.perRound[i].W.var);
+    }
+    console.log(`sum ${sum}`)
+    console.log(`oie `, sum/interface.getInputValues().rodadas);
+
+    // console.log(result.stats.perRound.map(r => r.W.var).reduce((p, c) => p+c))
+    // console.log();
+
+    interface.addTableRow('metricas-table', {
+        'rodada': result.stats.round,
+        'X': result.stats.X.getAverage().toFixed(5),
+        'vX': result.stats.vX.getAverage().toFixed(5),
+        'W': result.stats.W.getAverage().toFixed(5),
+        'vW': result.stats.vW.getAverage().toFixed(5),
+        'T': result.stats.T.getAverage().toFixed(5),
+        'vT': result.stats.vT.getAverage().toFixed(5),
+        'Nq': result.stats.Nq.getAverage().toFixed(5),
+        'vNq': result.stats.vNq.getAverage().toFixed(5),
+    })
     
     // graficos
     // interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');

@@ -8,14 +8,24 @@ class StatsCollector {
         this.resetRoundEstimators(0);
 
         this.rNq = new ContinuousEstimator();
+        this.initEstimators();
+    }
+
+    initEstimators() {
+        // estimadores das medias de cada parâmetro
         this.X = new DiscreteEstimator();
         this.W = new DiscreteEstimator();
         this.T = new DiscreteEstimator();
         this.Nq = new DiscreteEstimator();
+    
+        // estimadores das variâncias de cada parâmetro
+        this.vX = new DiscreteEstimator();
+        this.vW = new DiscreteEstimator();
+        this.vT = new DiscreteEstimator();
+        this.vNq = new DiscreteEstimator();
     }
 
-    resetRoundEstimators(time) {
-        // salvando as metricas de cada rodada antes de resetar(menos no tempo 0 que é a inicialização)
+    saveRoundStats(time) {
         if (time != 0)
             this.perRound.push({
                 'round': this.round,
@@ -36,7 +46,13 @@ class StatsCollector {
                     'var': this.rNq.getVariance(time).toFixed(5)
                 }
             });
+    }
 
+    resetRoundEstimators(time) {
+        // salvando as metricas de cada rodada antes de resetar(menos no tempo 0 que é a inicialização)
+        this.saveRoundStats(time);
+
+        // reset coletores de estatisticas dos rounds
         this.rX = new DiscreteEstimator();
         this.rW = new DiscreteEstimator();
         this.rT = new DiscreteEstimator();
@@ -56,10 +72,17 @@ class StatsCollector {
     nextRound(time) {
         this.round += 1;
 
+        // amostras das médias da rodada
         this.X.sample(this.rX.getAverage());
         this.W.sample(this.rW.getAverage());
         this.T.sample(this.rT.getAverage());
         this.Nq.sample(this.rNq.getAverage(time));
+
+        // amostras das variâncias da rodada
+        this.vX.sample(this.rX.getVariance());
+        this.vW.sample(this.rW.getVariance());
+        this.vT.sample(this.rT.getVariance());
+        this.vNq.sample(this.rNq.getVariance(time));
 
         this.resetRoundEstimators(time);
     }

@@ -1,3 +1,5 @@
+const Utils = require('../Aux/utils')
+
 class DiscreteEstimator {
     constructor() {
         this.sum = 0;
@@ -22,8 +24,8 @@ class DiscreteEstimator {
         if (this.n < 2) {
             return Infinity;
         }
-        return (this.squareSum / (this.n - 1))
-            - (this.sum ** 2) / (this.n * (this.n - 1));
+        return (this.squareSum / (this.n - 1)) -
+            (this.sum ** 2) / (this.n * (this.n - 1));
     }
 
     getStdDev() {
@@ -32,7 +34,7 @@ class DiscreteEstimator {
 
     getTStudentConfidenceInterval() {
         let diff = 1.96 * this.getStdDev() / Math.sqrt(this.n);
-        return { 
+        return {
             high: this.getAverage() + diff,
             low: this.getAverage() - diff
         }
@@ -40,10 +42,13 @@ class DiscreteEstimator {
 
     getChi2ConfidenceInterval() {
         const alpha = 0.05;
-        let chi2Low = Utils.getInverseChiSquaredCDF(1 - alpha/2, this.n - 1);
-        let chi2Up  = Utils.getInverseChiSquaredCDF(alpha/2,     this.n - 1);
-        
-        return '2do';
+        let chi2Low = Utils.getInverseChiSquaredCDF(1 - (alpha / 2), this.n - 1);
+        let chi2Up = Utils.getInverseChiSquaredCDF(alpha / 2, this.n - 1);
+
+        return {
+            high: (this.n - 1) * this.getAverage() / chi2Up,
+            low: (this.n - 1) * this.getAverage() / chi2Low
+        }
     }
 }
 

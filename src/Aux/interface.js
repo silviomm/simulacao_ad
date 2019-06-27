@@ -128,7 +128,7 @@ class Interface {
         this.addTableRow('ic-table',
             [
                 'E[W]',
-                `Entre ${stats.W.getTStudentConfidenceInterval().high} e ${stats.W.getTStudentConfidenceInterval().low}`,
+                `Entre <b>${stats.W.getTStudentConfidenceInterval().high}</b> e <b>${stats.W.getTStudentConfidenceInterval().low}</b>`,
                 '2do'
             ],
         )
@@ -136,7 +136,7 @@ class Interface {
         this.addTableRow('ic-table',
             [
                 'Var[W] t-student',
-                `Entre 2do e 2do`,
+                `Entre <b>${stats.vW.getTStudentConfidenceInterval().high}</b> e <b>${stats.vW.getTStudentConfidenceInterval().low}<b>`,
                 '2do'
             ],
         )
@@ -144,7 +144,7 @@ class Interface {
         this.addTableRow('ic-table',
             [
                 'Var[W] chi2',
-                `Entre 2do e 2do`,
+                `Entre <b>${stats.vW.getChi2ConfidenceInterval().high}</b> e <b>${stats.vW.getChi2ConfidenceInterval().low}</b>`,
                 '2do'
             ],
         )
@@ -152,7 +152,7 @@ class Interface {
         this.addTableRow('ic-table',
             [
                 'E[Nq]',
-                `Entre ${stats.Nq.getTStudentConfidenceInterval().high} e ${stats.Nq.getTStudentConfidenceInterval().low}`,
+                `Entre <b>${stats.Nq.getTStudentConfidenceInterval().high}</b> e <b>${stats.Nq.getTStudentConfidenceInterval().low}</b>`,
                 '2do'
             ],
         )
@@ -160,7 +160,7 @@ class Interface {
         this.addTableRow('ic-table',
             [
                 'Var[Nq] t-student',
-                `Entre 2do e 2do`,
+                `Entre <b>${stats.vNq.getTStudentConfidenceInterval().high}</b> e <b>${stats.vNq.getTStudentConfidenceInterval().low}</b>`,
                 '2do'
             ],
         )
@@ -168,7 +168,7 @@ class Interface {
         this.addTableRow('ic-table',
             [
                 'Var[Nq] chi2',
-                `Entre 2do e 2do`,
+                `Entre <b>${stats.vNq.getChi2ConfidenceInterval().high}</b> e <b>${stats.vNq.getChi2ConfidenceInterval().low}</b>`,
                 '2do'
             ],
         )
