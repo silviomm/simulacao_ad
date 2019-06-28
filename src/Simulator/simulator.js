@@ -3,8 +3,10 @@ const FCFSQueue = require('../Queues/fcfs');
 
 const StatsCollector = require('../Statistics/stats-collector');
 
-const ExponentialServer = require('./exponential-server');
+const Server = require('./server');
 const ArrivalGenerator = require('./arrival-generator');
+
+const utils = require('../Aux/utils');
 
 function queueToServer(time, queue, server) {
     let elt = queue.get();
@@ -27,17 +29,16 @@ module.exports = {
     run: (inputs) => {
         let numRodadas = inputs.rodadas;
         let numFregueses = 3000;
-    
-    
+
         let numPontos = 200;
         if(numFregueses*numRodadas < numPontos)
             numPontos = numFregueses*numRodadas;
-    
+
         let intervalo = parseInt((numFregueses*numRodadas) / numPontos, 10);
-    
+
         numPontos = parseInt((numFregueses*numRodadas) / intervalo, 10);
 
-        console.log('init' , numPontos, intervalo, numFregueses)
+        console.log('init' , numPontos, intervalo, numFregueses);
 
         const nrodadas = inputs.rodadas;
         let nqIter = [];
@@ -45,7 +46,7 @@ module.exports = {
 
         let generator = new ArrivalGenerator(inputs.rho);
         let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
-        let server = new ExponentialServer(1);
+        let server = new Server(1);
         let stats = new StatsCollector();
 
         let currentTime = 0;
@@ -115,20 +116,17 @@ module.exports = {
                         if ((((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= numFregueses * numRodadas))) {
                             wIter.push(stats.rrW.getAverage().toFixed(5));
                             nqIter.push(stats.rrNq.getAverage(currentTime).toFixed(5));
-                            
                         }
                     }
                 }
-              
-              
-                
+
             }
             // console.log("arrivals", arrivals);
             // console.log("departures", departures);
 
             stats.nextRound(currentTime);
         }
-        // média das médias 
+        // média das médias
         // console.log(stats.X.getAverage(), stats.W.getAverage(), stats.T.getAverage());
 
         let resultado = {

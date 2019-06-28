@@ -1,15 +1,16 @@
 const utils = require('../Aux/utils');
 
-class ExponentialServer {
-    constructor(rate) {
+class Server {
+    constructor(rate, distribution = utils.getRandomExp) {
         this.rate = rate;
+        this.distribution = distribution;
         this.exitTime = Infinity;
         this.currentElement = null;
     }
 
     enter(time, elt) {
         elt.entryTime = time;
-        elt.exitTime = time + utils.getRandomExp(this.rate);
+        elt.exitTime = time + this.distribution(this.rate);
         this.currentElement = elt;
         this.exitTime = elt.exitTime;
     }
@@ -40,4 +41,4 @@ class ExponentialServer {
     }
 }
 
-module.exports = ExponentialServer;
+module.exports = Server;

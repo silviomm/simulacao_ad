@@ -1,13 +1,14 @@
 const utils = require('../Aux/utils');
 
 class ArrivalGenerator {
-    constructor(rate, time = 0) {
+    constructor(rate, distribution = utils.getRandomExp, time = 0) {
         this.rate = rate;
+        this.distribution = distribution;
         this.time = time;
     }
 
     getNext() {
-        this.time += utils.getRandomExp(this.rate);
+        this.time += this.distribution(this.rate);
         return this.time;
     }
 }
