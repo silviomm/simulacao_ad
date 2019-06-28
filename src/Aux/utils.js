@@ -11,6 +11,19 @@ module.exports = {
         return 1/rate;
     },
 
+    alternate: (values) => {
+        let i = -1;
+        return (rate) => {
+            while (true) {
+                i += 1;
+                if (i >= values.length) {
+                    i = 0;
+                }
+                return values[i];
+            }
+        };
+    },
+
     getInverseChiSquaredCDF(probability, degreeOfFreedom) {
         return chi2inv.invChiSquareCDF(probability, degreeOfFreedom);
     }
