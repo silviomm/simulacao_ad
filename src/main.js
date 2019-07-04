@@ -37,7 +37,7 @@ document.getElementById('run-button').addEventListener('click', () => {
     });
 
     // graficos
-    // interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
+    // grafico do artine antigo: interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
     interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
     interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
 

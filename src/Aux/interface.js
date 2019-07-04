@@ -68,10 +68,14 @@ class Interface {
 
         const transientPoints = Math.round(nPoints / 7);
 
+        console.log(dataPerTime)
+
         Charts.createLineChart(
             labelArray, {
-                'transient': dataPerTime.slice(0, transientPoints),
-                'normal': Array(transientPoints - 1).fill(null).concat(dataPerTime.slice(transientPoints, nPoints))
+                // 'transient': dataPerTime.slice(0, transientPoints),
+                'transient': null,
+                // 'normal': Array(transientPoints - 1).fill(null).concat(dataPerTime.slice(transientPoints, nPoints))
+                'normal': dataPerTime
             },
             chartId
         );

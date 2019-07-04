@@ -44,13 +44,19 @@ module.exports = {
         let nqIter = [];
         let wIter = [];
 
-        let generator = new ArrivalGenerator(inputs.rho);
         let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
-        let server = new Server(1);
+        
+        // server exponencial
+        // let generator = new ArrivalGenerator(inputs.rho);
+        // let server = new Server(1);
+
+        // server deterministico
+        let generator = new ArrivalGenerator(inputs.rho, utils.getDeterministic);
+        let server = new Server(1, utils.alternate([1.5, 0.1]));
+
+
         let stats = new StatsCollector();
-
         let currentTime = 0;
-
         let departuresTotal = 0;
 
         for (let i = 0; i < nrodadas; i++) {
