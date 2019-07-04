@@ -28,7 +28,7 @@ function exitServer(server) {
 module.exports = {
     run: (inputs) => {
         let numRodadas = inputs.rodadas;
-        let numFregueses = 3000;
+        let numFregueses = inputs.fregueses;
 
         let numPontos = 200;
         if(numFregueses*numRodadas < numPontos)

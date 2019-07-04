@@ -1,240 +1,259 @@
 <!doctype html>
 <html lang="en">
 
-  <head>
-    <meta charset="utf-8">
-    <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<head>
+  <meta charset="utf-8">
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link
-      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-      rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
 
-    <link href="css/chartist.min.css" rel="stylesheet">
+  <link href="css/chartist.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <!-- Custom styles for this page -->
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-    <title>Simulador AD</title>
-  </head>
+  <title>Simulador AD</title>
+</head>
 
-  <body>
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+<body>
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
-        <div class="container-fluid">
+    <!-- Main Content -->
+    <div id="content">
+      <div class="container-fluid">
 
-          <!-- INPUTS -->
-          <div class="row align-items-center">
-            <!-- LOGO UFRJ -->
-            <div class="col-md-3 mb-4">
-              <div class="clearfix">
-                <div class="text-center">
-                  <img class="img-fluid px-3 px-sm-4 mt-3" style="width: 25rem;"
-                       src="./vendor/002minerva_color_hor.png" alt="">
-                </div>
+        <!-- INPUTS -->
+        <div class="row align-items-center">
+          <!-- LOGO UFRJ -->
+          <div class="col-md-3 mb-4">
+            <div class="clearfix">
+              <div class="text-center">
+                <img class="img-fluid px-3 px-sm-4 mt-3" style="width: 25rem;" src="./vendor/002minerva_color_hor.png"
+                  alt="">
               </div>
             </div>
-            <!-- DISCIPLINA -->
-            <div class="col mb-4 mt-4">
-              <div class="card border-left-primary shadow py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        DISCIPLINA
+          </div>
+          <!-- DISCIPLINA -->
+          <div class="col mb-4 mt-4">
+            <div class="card border-left-primary shadow py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                      DISCIPLINA
+                    </div>
+                    <div class="row align-items-center">
+                      <div class="col mt-2">
+                        <i class="fas fa-arrow-alt-circle-right fa-2x text-gray-300"></i>
                       </div>
-                      <div class="row align-items-center">
-                        <div class="col mt-2">
-                          <i class="fas fa-arrow-alt-circle-right fa-2x text-gray-300"></i>
-                        </div>
-                        <div class="col-9">
-                          <select name="disciplina" id="input-disciplina"
-                                  class="form-control bg-light border-0 small">
-                            <option value="FCFS">FCFS</option>
-                            <option value="LCFS">LCFS</option>
-                          </select>
-                        </div>
+                      <div class="col-9">
+                        <select name="disciplina" id="input-disciplina" class="form-control bg-light border-0 small">
+                          <option value="FCFS">FCFS</option>
+                          <option value="LCFS">LCFS</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- UTILIZAÇÃO DO SISTEMA -->
-            <div class="col mb-4 mt-4">
-              <div class="card border-left-primary shadow py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">RHO
+          </div>
+          <!-- UTILIZAÇÃO DO SISTEMA -->
+          <div class="col mb-4 mt-4">
+            <div class="card border-left-primary shadow py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">RHO
+                    </div>
+                    <div class="row align-items-center">
+                      <div class="col mt-2">
+                        <i class="fas fa-tachometer-alt fa-2x text-gray-300"></i>
                       </div>
-                      <div class="row align-items-center">
-                        <div class="col mt-2">
-                          <i class="fas fa-tachometer-alt fa-2x text-gray-300"></i>
-                        </div>
-                        <div class="col-9">
-                          <input id="input-rho" type="number"
-                                 class="form-control bg-light border-0 small" value="0.9">
-                        </div>
+                      <div class="col-9">
+                        <input id="input-rho" type="number" class="form-control bg-light border-0 small" value="0.9">
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- RODADAS -->
-            <div class="col mb-4 mt-4">
-              <div class="card border-left-primary shadow py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">RODADAS
+          </div>
+          <!-- RODADAS -->
+          <div class="col mb-4 mt-4">
+            <div class="card border-left-primary shadow py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">RODADAS
+                    </div>
+                    <div class="row align-items-center">
+                      <div class="col mt-2">
+                        <i class="fas fa-circle-notch fa-2x text-gray-300"></i>
                       </div>
-                      <div class="row align-items-center">
-                        <div class="col mt-2">
-                          <i class="fas fa-circle-notch fa-2x text-gray-300"></i>
-                        </div>
-                        <div class="col-9">
-                          <input id="input-rodadas" type="number"
-                                 class="form-control bg-light border-0 small" value="3200">
-                        </div>
+                      <div class="col-9">
+                        <input id="input-rodadas" type="number" class="form-control bg-light border-0 small"
+                          value="3200">
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
-          <!-- END INPUTS -->
-
-          <!-- PLAY BUTTON -->
-          <div class="row">
-            <div class="col-12 text-center">
-              <p>
-                <a href="#" id="run-button" class="btn btn-success btn-lg">
-                  <span class="fas fa-play mr-2"></span> Run
-                </a>
-              </p>
-            </div>
-          </div>
-          <!-- END PLAY BUTTON -->
-
-          <!-- GRAFICOS -->
-          <div class="row">
-            <div class="col-6">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Média do Tamanho da fila(Nq) x Número de
-                    Fregueses</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-area" id="chart-area-1">
-                    <canvas id="chart-1"></canvas>
+          <!-- FREGUESES -->
+          <div class="col mb-4 mt-4">
+            <div class="card border-left-primary shadow py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">FREGUESES
+                    </div>
+                    <div class="row align-items-center">
+                      <div class="col mt-2">
+                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                      </div>
+                      <div class="col-9">
+                        <input id="input-fregueses" type="number" class="form-control bg-light border-0 small"
+                          value="1000">
+                      </div>
+                    </div>
                   </div>
-                  <hr>
-                  footer
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Média do Tempo na fila(W) x Número de
-                    Fregueses</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-area" id="chart-area-2">
-                    <canvas id="chart-2"></canvas>
-                  </div>
-                  <hr>
-                  footer
                 </div>
               </div>
             </div>
           </div>
-          <div style="display: none" class="col-lg-6 col-md-12 col-sm-12">
-            <div class="card">
-              <div class="card-header card-chart" data-background-color="green">
-                <div class="ct-chart" id="chartNq1"></div>
-              </div>
-              <div class="card-content">
-                <h4 class="title">Média do Tamanho da fila 01 (Nq1) x Número de Fregueses</h4>
-                <p class="category">A linha <strong>vermelha</strong> representa a fase
-                  <strong>transiente</strong>, enquanto a branca representa as amostras usadas nas
-                  coletas.</p>
-              </div>
-            </div>
-          </div>
-          <!-- END GRAFICOS -->
-          <!-- TABELA INTERVALO DE CONFIANÇA TOTAL-->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary" style="text-align: center">Intervalo de Confiança
-              </h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="ic-table" width="100%" cellspacing="0">
-                  <thead class="thead-dark">
-                    <tr>
-                      <th style="text-align: center">Parâmetro</th>
-                      <th style="text-align: center">Intervalo</th>
-                      <th style="text-align: center">Precisão</th>
-                    </tr>
-                  </thead>
-                  <tbody id="ic-table-tbody">
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <!-- FIM TABELA IC-->
-          <!-- TABELA METRICAS POR RODADA-->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary" style="text-align: center">Métricas
-              </h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="metricas-table" width="100%" cellspacing="0">
-                  <thead class="thead-dark">
-                    <tr>
-                      <th style="text-align: center">Rodada</th>
-                      <th style="text-align: center; text-decoration: overline">X</th>
-                      <th style="text-align: center">V[X]</th>
-                      <th style="text-align: center; text-decoration: overline">W</th>
-                      <th style="text-align: center">V[W]</th>
-                      <th style="text-align: center; text-decoration: overline">T</th>
-                      <th style="text-align: center">V[T]</th>
-                      <th style="text-align: center; text-decoration: overline">Nq</th>
-                      <th style="text-align: center">V[Nq]</th>
-                    </tr>
-                  </thead>
-                  <tbody id="metricas-table-tbody">
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <!-- FIM TABELA METRICAS-->
         </div>
+        <!-- END INPUTS -->
+
+        <!-- PLAY BUTTON -->
+        <div class="row">
+          <div class="col-12 text-center">
+            <p>
+              <a href="#" id="run-button" class="btn btn-success btn-lg">
+                <span class="fas fa-play mr-2"></span> Run
+              </a>
+            </p>
+          </div>
+        </div>
+        <!-- END PLAY BUTTON -->
+
+        <!-- GRAFICOS -->
+        <div class="row">
+          <div class="col-6">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Média do Tamanho da fila(Nq) x Número de
+                  Fregueses</h6>
+              </div>
+              <div class="card-body">
+                <div class="chart-area" id="chart-area-1">
+                  <canvas id="chart-1"></canvas>
+                </div>
+                <hr>
+                footer
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Média do Tempo na fila(W) x Número de
+                  Fregueses</h6>
+              </div>
+              <div class="card-body">
+                <div class="chart-area" id="chart-area-2">
+                  <canvas id="chart-2"></canvas>
+                </div>
+                <hr>
+                footer
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: none" class="col-lg-6 col-md-12 col-sm-12">
+          <div class="card">
+            <div class="card-header card-chart" data-background-color="green">
+              <div class="ct-chart" id="chartNq1"></div>
+            </div>
+            <div class="card-content">
+              <h4 class="title">Média do Tamanho da fila 01 (Nq1) x Número de Fregueses</h4>
+              <p class="category">A linha <strong>vermelha</strong> representa a fase
+                <strong>transiente</strong>, enquanto a branca representa as amostras usadas nas
+                coletas.</p>
+            </div>
+          </div>
+        </div>
+        <!-- END GRAFICOS -->
+        <!-- TABELA INTERVALO DE CONFIANÇA TOTAL-->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" style="text-align: center">Intervalo de Confiança
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="ic-table" width="100%" cellspacing="0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th style="text-align: center">Parâmetro</th>
+                    <th style="text-align: center">Intervalo</th>
+                    <th style="text-align: center">Precisão</th>
+                  </tr>
+                </thead>
+                <tbody id="ic-table-tbody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- FIM TABELA IC-->
+        <!-- TABELA METRICAS POR RODADA-->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" style="text-align: center">Métricas
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="metricas-table" width="100%" cellspacing="0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th style="text-align: center">Rodada</th>
+                    <th style="text-align: center; text-decoration: overline">X</th>
+                    <th style="text-align: center">V[X]</th>
+                    <th style="text-align: center; text-decoration: overline">W</th>
+                    <th style="text-align: center">V[W]</th>
+                    <th style="text-align: center; text-decoration: overline">T</th>
+                    <th style="text-align: center">V[T]</th>
+                    <th style="text-align: center; text-decoration: overline">Nq</th>
+                    <th style="text-align: center">V[Nq]</th>
+                  </tr>
+                </thead>
+                <tbody id="metricas-table-tbody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- FIM TABELA METRICAS-->
       </div>
     </div>
+  </div>
 
 
-  </body>
-  <!-- Page level plugins -->
-  <script src="vendor/jquery.min.js"></script>
-  <script src="vendor/Chart.min.js"></script>
-  <script src="bundle.js"></script>
-  <script src="js/chartist.min.js"></script>
+</body>
+<!-- Page level plugins -->
+<script src="vendor/jquery.min.js"></script>
+<script src="vendor/Chart.min.js"></script>
+<script src="bundle.js"></script>
+<script src="js/chartist.min.js"></script>
 
 </html>
