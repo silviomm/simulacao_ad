@@ -6,7 +6,7 @@ const StatsCollector = require('../Statistics/stats-collector');
 const Server = require('./server');
 const ArrivalGenerator = require('./arrival-generator');
 
-const utils = require('../Aux/utils');
+const utils = require('../Helpers/utils');
 
 function queueToServer(time, queue, server) {
     let elt = queue.get();

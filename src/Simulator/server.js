@@ -1,4 +1,4 @@
-const utils = require('../Aux/utils');
+const utils = require('../Helpers/utils');
 
 class Server {
     constructor(rate, distribution = utils.getRandomExp) {

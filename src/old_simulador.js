@@ -1,4 +1,4 @@
-// Nossas funções auxiliares
+// Nossas funções Helpersiliares
 const utils = require('./utils');
 const Estimador = require('./estimador');
 

@@ -1,4 +1,4 @@
-const Utils = require('../Aux/utils')
+const Utils = require('../Helpers/utils')
 
 class DiscreteEstimator {
     constructor() {

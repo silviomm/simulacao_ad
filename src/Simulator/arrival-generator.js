@@ -1,4 +1,4 @@
-const utils = require('../Aux/utils');
+const utils = require('../Helpers/utils');
 
 class ArrivalGenerator {
     constructor(rate, distribution = utils.getRandomExp, time = 0) {

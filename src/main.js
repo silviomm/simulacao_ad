@@ -6,7 +6,7 @@
 */
 
 // Nossas funções de interação com a interface
-const interface = require('./Aux/interface');
+const interface = require('./Helpers/interface');
 
 // Lógica principal do simulador
 const simulator = require('./Simulator/simulator');
