@@ -23,6 +23,16 @@ function exitServer(server) {
     return server.exit();
 }
 
+function timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico){
+    return (((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= (totalFreguesesGrafico)))
+}
+
+function colectData(stats, currentTime, wIter, nqIter){
+
+    wIter.push(stats.rrW.getAverage().toFixed(5));
+    nqIter.push(stats.rrNq.getAverage(currentTime).toFixed(5));
+}
+
 // elemento: arrivalTime, entryTime, exitTime
 
 module.exports = {
@@ -35,9 +45,11 @@ module.exports = {
             numPontos = numFregueses*numRodadas;
 
         let intervalo = parseInt((numFregueses*numRodadas) / numPontos, 10);
-
+	
         numPontos = parseInt((numFregueses*numRodadas) / intervalo, 10);
-
+	let totalFreguesesGrafico = numFregueses * numRodadas + 1;
+	
+	
         console.log('init' , numPontos, intervalo, numFregueses);
 
         const nrodadas = inputs.rodadas;
@@ -118,11 +130,12 @@ module.exports = {
                         serverState = server.getState();
 
                         departures += 1;
-                        departuresTotal +=1;
-	                if ((((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= (numFregueses * numRodadas + 1)))) {
-                            wIter.push(stats.rrW.getAverage().toFixed(5));
-                            nqIter.push(stats.rrNq.getAverage(currentTime).toFixed(5));
-                        }
+
+			departuresTotal += 1;
+                        
+			if (timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico))
+			    colectData(stats, currentTime,  wIter, nqIter);
+	              
                     }
                 }
 
