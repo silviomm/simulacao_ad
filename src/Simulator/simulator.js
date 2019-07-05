@@ -118,8 +118,8 @@ module.exports = {
                         serverState = server.getState();
 
                         departures += 1;
-                        departuresTotal +=1 ;
-                        if ((((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= numFregueses * numRodadas))) {
+                        departuresTotal +=1;
+	                if ((((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= (numFregueses * numRodadas + 1)))) {
                             wIter.push(stats.rrW.getAverage().toFixed(5));
                             nqIter.push(stats.rrNq.getAverage(currentTime).toFixed(5));
                         }
@@ -142,7 +142,7 @@ module.exports = {
             'numPontos': numPontos,
             'totalId': numPontos*intervalo
         };
-
+	
         return resultado;
     }
 }
