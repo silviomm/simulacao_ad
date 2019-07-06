@@ -23,12 +23,24 @@ function exitServer(server) {
     return server.exit();
 }
 
+function calcNumberOfPoints(numFregueses, numRodadas) {
+    let numPontos = 200;
+    if (numFregueses * numRodadas < numPontos)
+        numPontos = numFregueses * numRodadas;
+    let intervalo = parseInt((numFregueses * numRodadas) / numPontos, 10);
+    numPontos = parseInt((numFregueses * numRodadas) / intervalo, 10);
+    return {
+        'totalFreguesesGrafico': numFregueses * numRodadas + 1,
+        'intervalo': intervalo,
+        'numPontos': numPontos
+    };
+}
+
 function timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico) {
     return (((departuresTotal + 1) % intervalo === 0) && ((departuresTotal + 1) <= (totalFreguesesGrafico)))
 }
 
 function colectData(stats, currentTime, wIter, nqIter) {
-
     wIter.push(stats.rrW.getAverage().toFixed(5));
     nqIter.push(stats.rrNq.getAverage(currentTime).toFixed(5));
 }
@@ -37,17 +49,13 @@ function colectData(stats, currentTime, wIter, nqIter) {
 
 module.exports = {
     run: (inputs) => {
+        // Inicia com os valores de input
         let numRodadas = inputs.rodadas;
         let numFregueses = inputs.fregueses;
+        let numTransiente = inputs.transiente;
 
-        let numPontos = 200;
-        if (numFregueses * numRodadas < numPontos)
-            numPontos = numFregueses * numRodadas;
-
-        let intervalo = parseInt((numFregueses * numRodadas) / numPontos, 10);
-
-        numPontos = parseInt((numFregueses * numRodadas) / intervalo, 10);
-        let totalFreguesesGrafico = numFregueses * numRodadas + 1;
+        // Determina quantos pontos serão plotados nos gráficos
+        let calc = calcNumberOfPoints(numFregueses, numRodadas);
 
         const nrodadas = inputs.rodadas;
         let nqIter = [];
@@ -130,7 +138,7 @@ module.exports = {
 
                         departuresTotal += 1;
 
-                        if (timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico))
+                        if (timeToCollect(departuresTotal, calc.intervalo, calc.totalFreguesesGrafico))
                             colectData(stats, currentTime, wIter, nqIter);
 
                     }
@@ -149,8 +157,8 @@ module.exports = {
             'stats': stats,
             'nqIter': nqIter,
             'wIter': wIter,
-            'numPontos': numPontos,
-            'totalId': numPontos * intervalo
+            'numPontos': calc.numPontos,
+            'totalId': calc.numPontos * calc.intervalo
         };
 
         return resultado;
