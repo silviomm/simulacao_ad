@@ -50,17 +50,16 @@ function colectData(stats, currentTime, wIter, nqIter) {
 module.exports = {
     run: (inputs) => {
         // Inicia com os valores de input
-        let numRodadas = inputs.rodadas;
-        let numFregueses = inputs.fregueses;
-        let numTransiente = inputs.transiente;
+        const numRodadas = inputs.rodadas;
+        const numFregueses = inputs.fregueses;
+        const numTransiente = inputs.transiente;
+        const nrodadas = inputs.rodadas;
 
         // Determina quantos pontos serão plotados nos gráficos
         let calc = calcNumberOfPoints(numFregueses, numRodadas);
 
-        const nrodadas = inputs.rodadas;
         let nqIter = [];
         let wIter = [];
-
         let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
 
         // server exponencial

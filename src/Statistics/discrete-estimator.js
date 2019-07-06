@@ -48,8 +48,8 @@ class DiscreteEstimator {
         let chi2Up = Utils.getInverseChiSquaredCDF(alpha / 2, this.n - 1);
 
         return {
-            high: (this.n - 1) * this.getAverage() / chi2Up,
-            low: (this.n - 1) * this.getAverage() / chi2Low,
+            high: (this.n - 1) * this.getVariance() / chi2Up,
+            low: (this.n - 1) * this.getVariance() / chi2Low,
             precision: ((chi2Low - chi2Up) / (chi2Low + chi2Up))*100
         }
     }
