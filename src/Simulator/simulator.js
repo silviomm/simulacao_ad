@@ -75,11 +75,12 @@ module.exports = {
         let currentTime = 0;
         let departuresTotal = 0;
 
+        let nextArrival = generator.getNext();
+
         for (let i = 0; i < nrodadas; i++) {
             let arrivals = 0;
             let departures = 0;
 
-            let nextArrival = generator.getNext();
             let queueHead = queue.peek();
             let serverState = server.getState();
 
@@ -125,11 +126,13 @@ module.exports = {
                         arrivals += 1;
                     } else {
                         //console.log("saida do servidor", serverState.exitTime);
-                        elt = exitServer(server);
+                        let nq = queue.length();
+                        let elt = exitServer(server);
 
                         currentTime = serverState.exitTime;
 
                         stats.fromElement(elt);
+                        stats.updateQueue(currentTime, nq);
 
                         serverState = server.getState();
 
