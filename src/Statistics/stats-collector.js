@@ -18,7 +18,7 @@ class StatsCollector {
         this.W = new DiscreteEstimator();
         this.T = new DiscreteEstimator();
         this.Nq = new DiscreteEstimator();
-    
+
         // estimadores das variâncias de cada parâmetro
         this.vX = new DiscreteEstimator();
         this.vW = new DiscreteEstimator();
@@ -64,7 +64,7 @@ class StatsCollector {
         this.rX.sample(elt.exitTime - elt.entryTime);
         this.rW.sample(elt.entryTime - elt.arrivalTime);
         this.rT.sample(elt.exitTime - elt.arrivalTime);
-        
+
         this.rrW.sample(elt.entryTime - elt.arrivalTime);
     }
 

@@ -37,7 +37,7 @@ function calcNumberOfPoints(numFregueses, numRodadas) {
 }
 
 function timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico) {
-    return (((departuresTotal + 1) % intervalo === 0) && ((departuresTotal + 1) <= (totalFreguesesGrafico)))
+    return (((departuresTotal + 1) % intervalo === 0) && ((departuresTotal + 1) <= (totalFreguesesGrafico)));
 }
 
 function colectData(stats, currentTime, wIter, nqIter) {
@@ -139,10 +139,8 @@ module.exports = {
 
                         if (timeToCollect(departuresTotal, calc.intervalo, calc.totalFreguesesGrafico))
                             colectData(stats, currentTime, wIter, nqIter);
-
                     }
                 }
-
             }
             // console.log("arrivals", arrivals);
             // console.log("departures", departures);
@@ -160,4 +158,4 @@ module.exports = {
 
         return resultado;
     }
-}
+};

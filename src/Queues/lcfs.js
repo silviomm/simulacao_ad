@@ -1,6 +1,6 @@
 class LCFSQueue {
     constructor() {
-        this.queue = []
+        this.queue = [];
     }
 
     put(elt) {
