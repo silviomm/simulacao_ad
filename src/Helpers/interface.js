@@ -20,13 +20,15 @@ class Interface {
         const inputRhoValue = document.getElementById('input-rho').value;
         const inputRodadasValue = document.getElementById('input-rodadas').value;
         const inputFreguesesValue = document.getElementById('input-fregueses').value;
+        const inputTransienteValue = document.getElementById('input-transiente').value;
         
 
         return {
             'disciplina': inputDisciplinaValue || 'FCFS',
             'rho': inputRhoValue || 0.2,
             'rodadas': inputRodadasValue || 3200,
-            'fregueses': inputFreguesesValue || 1000
+            'fregueses': inputFreguesesValue || 1000,
+            'transiente': inputTransienteValue || 15000
         }
     }
 
@@ -83,59 +85,61 @@ class Interface {
 
 
     // Preenche tabela de IC
+    // ordem no html: parâmetro, ic, precisão
     static fillICTable(stats) {
         this.clearTable('ic-table');
-        // ordem no html: parâmetro, ic, precisão
         // E[W]
-        let icW = stats.W.getTStudentConfidenceInterval();
+        let ictEW = stats.W.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'E[W]',
-                `Entre <b>${icW.high}</b> e <b>${icW.low}</b>`,
-                `${(icW.precision).toFixed(5)}%`
+                `Entre <b>${ictEW.high}</b> e <b>${ictEW.low}</b>`,
+                `${(ictEW.precision).toFixed(5)}%`
             ],
         )
         // Var[W] tstudent
-        let icvW = stats.vW.getTStudentConfidenceInterval();
+        let ictVW = stats.vW.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'Var[W] t-student',
-                `Entre <b>${icvW.high}</b> e <b>${icvW.low}<b>`,
-                `${(icvW.precision).toFixed(5)}%`
+                `Entre <b>${ictVW.high}</b> e <b>${ictVW.low}<b>`,
+                `${(ictVW.precision).toFixed(5)}%`
             ],
         )
         // Var[W] chi2
+        let icc2VW = stats.vW.getChi2ConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'Var[W] chi2',
-                `Entre <b>${stats.vW.getChi2ConfidenceInterval().high}</b> e <b>${stats.vW.getChi2ConfidenceInterval().low}</b>`,
-                '2do'
+                `Entre <b>${icc2VW.high}</b> e <b>${icc2VW.low}</b>`,
+                `${(icc2VW.precision).toFixed(5)}%`
             ],
         )
         // E[Nq]
-        let icNq = stats.Nq.getTStudentConfidenceInterval();
+        let ictENq = stats.Nq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'E[Nq]',
-                `Entre <b>${icNq.high}</b> e <b>${icNq.low}</b>`,
-                `${(icNq.precision).toFixed(5)}%`
+                `Entre <b>${ictENq.high}</b> e <b>${ictENq.low}</b>`,
+                `${(ictENq.precision).toFixed(5)}%`
             ],
         )
         // Var[Nq] tstudent
-        let icvNq = stats.vNq.getTStudentConfidenceInterval();
+        let ictVNq = stats.vNq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'Var[Nq] t-student',
-                `Entre <b>${icvNq.high}</b> e <b>${icvNq.low}</b>`,
-                `${(icvNq.precision).toFixed(5)}%`
+                `Entre <b>${ictVNq.high}</b> e <b>${ictVNq.low}</b>`,
+                `${(ictVNq.precision).toFixed(5)}%`
             ],
         )
         // Var[Nq] chi2
+        let icc2VNq = stats.vNq.getChi2ConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'Var[Nq] chi2',
-                `Entre <b>${stats.vNq.getChi2ConfidenceInterval().high}</b> e <b>${stats.vNq.getChi2ConfidenceInterval().low}</b>`,
-                '2do'
+                `Entre <b>${icc2VNq.high}</b> e <b>${icc2VNq.low}</b>`,
+                `${icc2VNq.precision.toFixed(5)}`
             ],
         )
     }

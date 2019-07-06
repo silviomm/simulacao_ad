@@ -49,7 +49,8 @@ class DiscreteEstimator {
 
         return {
             high: (this.n - 1) * this.getAverage() / chi2Up,
-            low: (this.n - 1) * this.getAverage() / chi2Low
+            low: (this.n - 1) * this.getAverage() / chi2Low,
+            precision: ((chi2Low - chi2Up) / (chi2Low + chi2Up))*100
         }
     }
 }

@@ -23,11 +23,11 @@ function exitServer(server) {
     return server.exit();
 }
 
-function timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico){
-    return (((departuresTotal+1) % intervalo === 0) && ((departuresTotal+1) <= (totalFreguesesGrafico)))
+function timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico) {
+    return (((departuresTotal + 1) % intervalo === 0) && ((departuresTotal + 1) <= (totalFreguesesGrafico)))
 }
 
-function colectData(stats, currentTime, wIter, nqIter){
+function colectData(stats, currentTime, wIter, nqIter) {
 
     wIter.push(stats.rrW.getAverage().toFixed(5));
     nqIter.push(stats.rrNq.getAverage(currentTime).toFixed(5));
@@ -41,23 +41,20 @@ module.exports = {
         let numFregueses = inputs.fregueses;
 
         let numPontos = 200;
-        if(numFregueses*numRodadas < numPontos)
-            numPontos = numFregueses*numRodadas;
+        if (numFregueses * numRodadas < numPontos)
+            numPontos = numFregueses * numRodadas;
 
-        let intervalo = parseInt((numFregueses*numRodadas) / numPontos, 10);
-	
-        numPontos = parseInt((numFregueses*numRodadas) / intervalo, 10);
-	let totalFreguesesGrafico = numFregueses * numRodadas + 1;
-	
-	
-        console.log('init' , numPontos, intervalo, numFregueses);
+        let intervalo = parseInt((numFregueses * numRodadas) / numPontos, 10);
+
+        numPontos = parseInt((numFregueses * numRodadas) / intervalo, 10);
+        let totalFreguesesGrafico = numFregueses * numRodadas + 1;
 
         const nrodadas = inputs.rodadas;
         let nqIter = [];
         let wIter = [];
 
         let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
-        
+
         // server exponencial
         // let generator = new ArrivalGenerator(inputs.rho);
         // let server = new Server(1);
@@ -92,7 +89,7 @@ module.exports = {
                         queueHead = queue.peek();
                         serverState = server.getState();
                     } else { // servidor e fila vazios
-                        //console.log("chegada pra fila 1", nextArrival);
+                        //console.log("chegada pra fila - server e fila vazios", nextArrival);
                         let nq = queue.length();
                         arrivalToQueue(nextArrival, queue);
 
@@ -107,7 +104,7 @@ module.exports = {
                     }
                 } else { // servidor ocupado
                     if (nextArrival <= serverState.exitTime) {
-                        //console.log("chegada pra fila 2", nextArrival);
+                        //console.log("chegada pra fila - server ocupado", nextArrival);
                         let nq = queue.length();
                         arrivalToQueue(nextArrival, queue);
 
@@ -131,11 +128,11 @@ module.exports = {
 
                         departures += 1;
 
-			departuresTotal += 1;
-                        
-			if (timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico))
-			    colectData(stats, currentTime,  wIter, nqIter);
-	              
+                        departuresTotal += 1;
+
+                        if (timeToCollect(departuresTotal, intervalo, totalFreguesesGrafico))
+                            colectData(stats, currentTime, wIter, nqIter);
+
                     }
                 }
 
@@ -153,9 +150,9 @@ module.exports = {
             'nqIter': nqIter,
             'wIter': wIter,
             'numPontos': numPontos,
-            'totalId': numPontos*intervalo
+            'totalId': numPontos * intervalo
         };
-	
+
         return resultado;
     }
 }
