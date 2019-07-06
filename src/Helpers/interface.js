@@ -39,7 +39,6 @@ class Interface {
 
     // Preenche tabela de métricas por rodada
     static fillMetricasTable(stats) {
-        this.clearTable('metricas-table');
         for (let i = 0; i < stats.perRound.length; i++) {
             const s = stats.perRound[i];
             // ordem no html: round, (avg e var)(x, w, t, nq)
@@ -70,8 +69,6 @@ class Interface {
 
         const transientPoints = Math.round(nPoints / 7);
 
-        console.log(dataPerTime)
-
         Charts.createLineChart(
             labelArray, {
                 // 'transient': dataPerTime.slice(0, transientPoints),
@@ -85,34 +82,36 @@ class Interface {
 
 
     // Preenche tabela de IC
-    // ordem no html: parâmetro, ic, precisão
+    // ordem no html: parâmetro, tipo, precisão, [ic]
     static fillICTable(stats) {
-        this.clearTable('ic-table');
         // E[W]
         let ictEW = stats.W.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
                 'E[W]',
+                't-student',
+                `${(ictEW.precision).toFixed(2)}%`,
                 `Entre <b>${ictEW.high}</b> e <b>${ictEW.low}</b>`,
-                `${(ictEW.precision).toFixed(5)}%`
             ],
         )
         // Var[W] tstudent
         let ictVW = stats.vW.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
-                'Var[W] t-student',
+                'Var[W]',
+                't-student',
+                `${(ictVW.precision).toFixed(2)}%`,
                 `Entre <b>${ictVW.high}</b> e <b>${ictVW.low}<b>`,
-                `${(ictVW.precision).toFixed(5)}%`
             ],
         )
         // Var[W] chi2
         let icc2VW = stats.vW.getChi2ConfidenceInterval();
         this.addTableRow('ic-table',
             [
-                'Var[W] chi2',
+                'Var[W]',
+                'chi²',
+                `${(icc2VW.precision).toFixed(2)}%`,
                 `Entre <b>${icc2VW.high}</b> e <b>${icc2VW.low}</b>`,
-                `${(icc2VW.precision).toFixed(5)}%`
             ],
         )
         // E[Nq]
@@ -120,26 +119,29 @@ class Interface {
         this.addTableRow('ic-table',
             [
                 'E[Nq]',
+                't-student',
+                `${(ictENq.precision).toFixed(2)}%`,
                 `Entre <b>${ictENq.high}</b> e <b>${ictENq.low}</b>`,
-                `${(ictENq.precision).toFixed(5)}%`
             ],
         )
         // Var[Nq] tstudent
         let ictVNq = stats.vNq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
             [
-                'Var[Nq] t-student',
+                'Var[Nq]',
+                't-student',
+                `${(ictVNq.precision).toFixed(2)}%`,
                 `Entre <b>${ictVNq.high}</b> e <b>${ictVNq.low}</b>`,
-                `${(ictVNq.precision).toFixed(5)}%`
             ],
         )
         // Var[Nq] chi2
         let icc2VNq = stats.vNq.getChi2ConfidenceInterval();
         this.addTableRow('ic-table',
             [
-                'Var[Nq] chi2',
+                'Var[Nq]',
+                'chi²',
+                `${icc2VNq.precision.toFixed(2)}%`,
                 `Entre <b>${icc2VNq.high}</b> e <b>${icc2VNq.low}</b>`,
-                `${icc2VNq.precision.toFixed(5)}`
             ],
         )
     }

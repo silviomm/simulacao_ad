@@ -149,8 +149,6 @@ module.exports = {
 
             stats.nextRound(currentTime);
         }
-        // média das médias
-        // console.log(stats.X.getAverage(), stats.W.getAverage(), stats.T.getAverage());
 
         let resultado = {
             'stats': stats,

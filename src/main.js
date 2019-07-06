@@ -19,13 +19,16 @@ document.getElementById('run-button').addEventListener('click', () => {
     let endTime = new Date().getTime();
 
     console.log('tempo simulacao: ', (endTime - startTime) / 1000);
-
-    // tabelas
     startTime = new Date().getTime();
+
+    // Preenche tabela de IC
+    interface.clearTable('ic-table');
     interface.fillICTable(result.stats);
-    interface.fillMetricasTable(result.stats);
+
+    // Preenche tabela de métricas
+    interface.clearTable('metricas-table');
     interface.addTableRow('metricas-table', {
-        'rodada': `<b>${result.stats.round}</b>`,
+        'rodada': `<b>MÉDIA</b>`,
         'X': `<b>${result.stats.X.getAverage().toFixed(5)}</b>`,
         'vX': `<b>${result.stats.vX.getAverage().toFixed(5)}</b>`,
         'W': `<b>${result.stats.W.getAverage().toFixed(5)}</b>`,
@@ -35,6 +38,7 @@ document.getElementById('run-button').addEventListener('click', () => {
         'Nq': `<b>${result.stats.Nq.getAverage().toFixed(5)}</b>`,
         'vNq': `<b>${result.stats.vNq.getAverage().toFixed(5)}</b>`,
     });
+    // interface.fillMetricasTable(result.stats);
 
     // graficos
     // grafico do artine antigo: interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
