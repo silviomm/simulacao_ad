@@ -40,8 +40,7 @@ class Interface {
 
     // Preenche tabela de métricas por rodada
     static fillMetricasTable(stats, numeroRodadas) {
-	let limiteRodadasBase = 200;
-	console.log('hi',numeroRodadas);
+	let limiteRodadasBase = 50;
 	let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
 	console.log(passo);
         for (let i = 0; i < stats.perRound.length; i+=passo) {
