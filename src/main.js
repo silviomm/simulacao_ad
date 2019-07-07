@@ -16,6 +16,8 @@ document.getElementById('run-button').addEventListener('click', () => {
 
     let startTime = new Date().getTime();
     let result = simulator.run(interface.getInputValues());
+    let input = interface.getInputValues();
+    let numeroRodadas = input.rodadas;
     let endTime = new Date().getTime();
 
     console.log('tempo simulacao: ', (endTime - startTime) / 1000);
@@ -24,9 +26,11 @@ document.getElementById('run-button').addEventListener('click', () => {
     // Preenche tabela de IC
     interface.clearTable('ic-table');
     interface.fillICTable(result.stats);
-
+    console.log(result.stats);
     // Preenche tabela de métricas
     interface.clearTable('metricas-table');
+    interface.fillMetricasTable(result.stats, numeroRodadas);
+
     interface.addTableRow('metricas-table', {
         'rodada': `<b>MÉDIA</b>`,
         'X': `<b>${result.stats.X.getAverage().toFixed(5)}</b>`,
@@ -38,8 +42,7 @@ document.getElementById('run-button').addEventListener('click', () => {
         'Nq': `<b>${result.stats.Nq.getAverage().toFixed(5)}</b>`,
         'vNq': `<b>${result.stats.vNq.getAverage().toFixed(5)}</b>`,
     });
-    // interface.fillMetricasTable(result.stats);
-
+    
     // graficos
     // grafico do artine antigo: interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
     interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
@@ -51,4 +54,4 @@ document.getElementById('run-button').addEventListener('click', () => {
 
 
 
-});
+})

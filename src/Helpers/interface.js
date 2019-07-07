@@ -36,10 +36,15 @@ class Interface {
     static clearTable(tableId) {
         document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
     }
+  
 
     // Preenche tabela de métricas por rodada
-    static fillMetricasTable(stats) {
-        for (let i = 0; i < stats.perRound.length; i++) {
+    static fillMetricasTable(stats, numeroRodadas) {
+	let limiteRodadasBase = 200;
+	console.log('hi',numeroRodadas);
+	let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
+	console.log(passo);
+        for (let i = 0; i < stats.perRound.length; i+=passo) {
             const s = stats.perRound[i];
             // ordem no html: round, (avg e var)(x, w, t, nq)
             let statsValues = [s.round, s.X.avg, s.X.var, s.W.avg, s.W.var, s.T.avg, s.T.var, s.Nq.avg, s.Nq.var];
