@@ -18,10 +18,16 @@
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet">
+
+
   <title>Simulador AD</title>
 </head>
 
 <body>
+  <div id="loader"></div>
+
   <!-- Content Wrapper -->
   <div id="content-wrapper" class="d-flex flex-column">
 
@@ -78,7 +84,8 @@
                         <i class="fas fa-tachometer-alt fa-2x text-gray-300"></i>
                       </div>
                       <div class="col-9">
-                        <input id="input-transiente" type="number" class="form-control bg-light border-0 small" placeholder="Auto">
+                        <input id="input-transiente" type="number" class="form-control bg-light border-0 small"
+                          placeholder="Auto">
                       </div>
                     </div>
                   </div>
@@ -120,8 +127,7 @@
                         <i class="fas fa-circle-notch fa-2x text-gray-300"></i>
                       </div>
                       <div class="col-9">
-                        <input id="input-rodadas" type="number" class="form-control bg-light border-0 small"
-                          value="2">
+                        <input id="input-rodadas" type="number" class="form-control bg-light border-0 small" value="2">
                       </div>
                     </div>
                   </div>
