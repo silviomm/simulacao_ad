@@ -1910,10 +1910,6 @@ class StatsCollector {
     
             this.rrW.sample(elt.entryTime - elt.arrivalTime);
         }
-        else {
-            console.log(`round elt: `, elt.round)
-            console.log(`round i`, currentRound);
-        }
     }
 
     updateQueue(time, nq) {
