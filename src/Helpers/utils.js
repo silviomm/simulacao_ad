@@ -1,8 +1,10 @@
 const seedrandom = require('seedrandom');
 const chi2inv = require('inv-chisquare-cdf');
 const random = seedrandom('semente');
-
+//Classe contendo funções úteis para o programa
 module.exports = {
+
+    //Função que retorna um número aleatório exponencial
     getRandomExp: (rate) => {
         return -Math.log(1 - random()) / rate;
     },
@@ -24,6 +26,7 @@ module.exports = {
         };
     },
 
+    
     getInverseChiSquaredCDF(probability, degreeOfFreedom) {
         return chi2inv.invChiSquareCDF(probability, degreeOfFreedom);
     }

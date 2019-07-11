@@ -1,15 +1,16 @@
 const designChart = require('./design-chart');
 
+//Classe responsavel por criar as linhas utilizadas nos gráficos
 class Charts {
 
     static createLineChart(labels, series, chartId) {
 
-        // definindo parte transient do grafico
+        // definindo parte transiente do grafico
         const transient = designChart.red_dataset;
         transient.data = series.transient;
         transient.label = 'transient';
 
-        // definindo parte "normal" do grafico
+        // definindo parte não transiente do grafico
         const normal = designChart.blue_dataset;
         normal.data = series.normal;
         normal.label = 'normal';

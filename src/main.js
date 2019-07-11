@@ -13,6 +13,8 @@ const simulator = require('./Simulator/simulator');
 
 function exibeModal() {
 
+    //Promise feita para aguardar a exibição do modal
+    //de carregamento antes de executar a lógica do simulador
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
@@ -20,31 +22,40 @@ function exibeModal() {
     });
 }
 
-// Adiciona evento de 'click' no botão de play.
+// Adiciona evento de 'click' no botão de play e executa o simulador.
 document.getElementById('run-button').addEventListener('click', () => {
     
 
     
     exibeModal().then(function(){
+
+        //Pega momento de início de simulação
         let startTime = new Date().getTime();
+
+        //Guarda os resultados da simulação na variável result
         let result = simulator.run(interface.getInputValues());
 
+        //Pega o número de rodadas e guarda para exibição de tabelas
         let input = interface.getInputValues();
-        console.log(result);
         let numeroRodadas = input.rodadas;
+
+        //Pega o momento de finalização de simulação
         let endTime = new Date().getTime();
 
+        //Exibe tempo de simulação
         console.log('tempo simulacao: ', (endTime - startTime) / 1000);
+
+        //Pega momento de início de geração de tabelas com resultados
         startTime = new Date().getTime();
 
         // Preenche tabela de IC
         interface.clearTable('ic-table');
         interface.fillICTable(result.stats);
-        console.log(result.stats);
         // Preenche tabela de métricas
         interface.clearTable('metricas-table');
         interface.fillMetricasTable(result.stats, numeroRodadas);
 
+        //Adiciona uma última coluna contendo a média das métricas calculadas
         interface.addTableRow('metricas-table', {
             'rodada': `<b>MÉDIA</b>`,
             'X': `<b>${result.stats.X.getAverage().toFixed(5)}</b>`,
@@ -57,24 +68,17 @@ document.getElementById('run-button').addEventListener('click', () => {
             'vNq': `<b>${result.stats.vNq.getAverage().toFixed(5)}</b>`,
         });
 
-        // graficos
-        // grafico do artine antigo: interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
+        //Chamada de funções para exibição de gráficos
         interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
         interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
 
+        //Pega o momento de finalização de exibição de métricas
         endTime = new Date().getTime();
 
         console.log('tempo renderização: ', (endTime - startTime) / 1000);
+
+        //Desliga o loader
         document.getElementById('loader').style.display = "none";
     })
    
-
-    // piru = new Promise((resolve) => {
-    //     resolve(document.getElementById('loader').style.display = "block");
-    // })
-    //     .then(function () {
-    //         fazSimulacao();
-    //         document.getElementById('loader').style.display = "none";
-    //     });
-
 })
