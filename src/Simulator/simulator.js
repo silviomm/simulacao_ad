@@ -13,8 +13,9 @@ function queueToServer(time, queue, server) {
     server.enter(time, elt);
 }
 
-function arrivalToQueue(time, queue) {
+function arrivalToQueue(time, queue, round) {
     queue.put({
+        round: round,
         arrivalTime: time
     });
 }
@@ -99,7 +100,7 @@ module.exports = {
                     } else { // servidor e fila vazios
                         //console.log("chegada pra fila - server e fila vazios", nextArrival);
                         let nq = queue.length();
-                        arrivalToQueue(nextArrival, queue);
+                        arrivalToQueue(nextArrival, queue, i);
 
                         currentTime = nextArrival;
 
@@ -114,7 +115,7 @@ module.exports = {
                     if (nextArrival <= serverState.exitTime) {
                         //console.log("chegada pra fila - server ocupado", nextArrival);
                         let nq = queue.length();
-                        arrivalToQueue(nextArrival, queue);
+                        arrivalToQueue(nextArrival, queue, i);
 
                         currentTime = nextArrival;
 
@@ -131,7 +132,7 @@ module.exports = {
 
                         currentTime = serverState.exitTime;
 
-                        stats.fromElement(elt);
+                        stats.fromElement(elt, i);
                         stats.updateQueue(currentTime, nq);
 
                         serverState = server.getState();

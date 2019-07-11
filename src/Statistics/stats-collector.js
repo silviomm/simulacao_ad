@@ -60,12 +60,14 @@ class StatsCollector {
         this.rNq = new ContinuousEstimator(time);
     }
 
-    fromElement(elt) {
-        this.rX.sample(elt.exitTime - elt.entryTime);
-        this.rW.sample(elt.entryTime - elt.arrivalTime);
-        this.rT.sample(elt.exitTime - elt.arrivalTime);
-
-        this.rrW.sample(elt.entryTime - elt.arrivalTime);
+    fromElement(elt, currentRound) {
+        if(elt.round == currentRound) {
+            this.rX.sample(elt.exitTime - elt.entryTime);
+            this.rW.sample(elt.entryTime - elt.arrivalTime);
+            this.rT.sample(elt.exitTime - elt.arrivalTime);
+    
+            this.rrW.sample(elt.entryTime - elt.arrivalTime);
+        }
     }
 
     updateQueue(time, nq) {

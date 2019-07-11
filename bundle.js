@@ -1592,8 +1592,9 @@ function queueToServer(time, queue, server) {
     server.enter(time, elt);
 }
 
-function arrivalToQueue(time, queue) {
+function arrivalToQueue(time, queue, round) {
     queue.put({
+        round: round,
         arrivalTime: time
     });
 }
@@ -1678,7 +1679,7 @@ module.exports = {
                     } else { // servidor e fila vazios
                         //console.log("chegada pra fila - server e fila vazios", nextArrival);
                         let nq = queue.length();
-                        arrivalToQueue(nextArrival, queue);
+                        arrivalToQueue(nextArrival, queue, i);
 
                         currentTime = nextArrival;
 
@@ -1693,7 +1694,7 @@ module.exports = {
                     if (nextArrival <= serverState.exitTime) {
                         //console.log("chegada pra fila - server ocupado", nextArrival);
                         let nq = queue.length();
-                        arrivalToQueue(nextArrival, queue);
+                        arrivalToQueue(nextArrival, queue, i);
 
                         currentTime = nextArrival;
 
@@ -1710,7 +1711,7 @@ module.exports = {
 
                         currentTime = serverState.exitTime;
 
-                        stats.fromElement(elt);
+                        stats.fromElement(elt, i);
                         stats.updateQueue(currentTime, nq);
 
                         serverState = server.getState();
@@ -1901,12 +1902,18 @@ class StatsCollector {
         this.rNq = new ContinuousEstimator(time);
     }
 
-    fromElement(elt) {
-        this.rX.sample(elt.exitTime - elt.entryTime);
-        this.rW.sample(elt.entryTime - elt.arrivalTime);
-        this.rT.sample(elt.exitTime - elt.arrivalTime);
-
-        this.rrW.sample(elt.entryTime - elt.arrivalTime);
+    fromElement(elt, currentRound) {
+        if(elt.round == currentRound) {
+            this.rX.sample(elt.exitTime - elt.entryTime);
+            this.rW.sample(elt.entryTime - elt.arrivalTime);
+            this.rT.sample(elt.exitTime - elt.arrivalTime);
+    
+            this.rrW.sample(elt.entryTime - elt.arrivalTime);
+        }
+        else {
+            console.log(`round elt: `, elt.round)
+            console.log(`round i`, currentRound);
+        }
     }
 
     updateQueue(time, nq) {
@@ -1954,7 +1961,7 @@ function exibeModal() {
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
-        setTimeout(function(){ resolve()}, 10);
+        setTimeout(function(){ resolve()}, 100);
     });
 }
 
