@@ -16,7 +16,7 @@ function exibeModal() {
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
-        setTimeout(function(){ resolve()}, 10);
+        setTimeout(function(){ resolve()}, 100);
     });
 }
 

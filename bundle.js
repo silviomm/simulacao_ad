@@ -1954,11 +1954,7 @@ function exibeModal() {
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
-<<<<<<< HEAD
         setTimeout(function(){ resolve()}, 10);
-=======
-        setTimeout(function(){ resolve()}, 100);
->>>>>>> 06f6ae70de0c7b01bb50ab8ceff6d5735d61ac12
     });
 }
 
@@ -1967,10 +1963,6 @@ document.getElementById('run-button').addEventListener('click', () => {
     
 
     
-<<<<<<< HEAD
-=======
-    exibeModal(); 
->>>>>>> 06f6ae70de0c7b01bb50ab8ceff6d5735d61ac12
     exibeModal().then(function(){
         let startTime = new Date().getTime();
         let result = simulator.run(interface.getInputValues());
