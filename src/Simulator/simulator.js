@@ -63,12 +63,12 @@ module.exports = {
         let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
 
         // server exponencial
-        // let generator = new ArrivalGenerator(inputs.rho);
-        // let server = new Server(1);
+        let generator = new ArrivalGenerator(inputs.rho);
+        let server = new Server(1);
 
         // server deterministico
-        let generator = new ArrivalGenerator(inputs.rho, utils.getDeterministic);
-        let server = new Server(1, utils.alternate([1.5, 0.1]));
+        // let generator = new ArrivalGenerator(inputs.rho, utils.getDeterministic);
+        // let server = new Server(1, utils.alternate([1.5, 0.1]));
 
 
         let stats = new StatsCollector();
