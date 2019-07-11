@@ -1358,7 +1358,7 @@ class Interface {
 
 
     // Preenche tabela de IC
-    // ordem no html: parâmetro, tipo, precisão, [ic]
+    // ordem no html: parâmetro, tipo, precisão, centro, [ic]
     static fillICTable(stats) {
         // E[W]
         let ictEW = stats.W.getTStudentConfidenceInterval();
@@ -1367,6 +1367,7 @@ class Interface {
                 'E[W]',
                 't-student',
                 `${(ictEW.precision).toFixed(2)}%`,
+                `${(ictEW.high+ictEW.low)/2}`,
                 `Entre <b>${ictEW.high}</b> e <b>${ictEW.low}</b>`,
             ],
         )
@@ -1377,6 +1378,7 @@ class Interface {
                 'Var[W]',
                 't-student',
                 `${(ictVW.precision).toFixed(2)}%`,
+                `${(ictVW.high+ictVW.low)/2}`,
                 `Entre <b>${ictVW.high}</b> e <b>${ictVW.low}<b>`,
             ],
         )
@@ -1387,6 +1389,7 @@ class Interface {
                 'Var[W]',
                 'chi²',
                 `${(icc2VW.precision).toFixed(2)}%`,
+                `${(icc2VW.high+icc2VW.low)/2}`,
                 `Entre <b>${icc2VW.high}</b> e <b>${icc2VW.low}</b>`,
             ],
         )
@@ -1397,6 +1400,7 @@ class Interface {
                 'E[Nq]',
                 't-student',
                 `${(ictENq.precision).toFixed(2)}%`,
+                `${(ictENq.high+ictENq.low)/2}`,
                 `Entre <b>${ictENq.high}</b> e <b>${ictENq.low}</b>`,
             ],
         )
@@ -1407,6 +1411,7 @@ class Interface {
                 'Var[Nq]',
                 't-student',
                 `${(ictVNq.precision).toFixed(2)}%`,
+                `${(ictVNq.high+ictVNq.low)/2}`,
                 `Entre <b>${ictVNq.high}</b> e <b>${ictVNq.low}</b>`,
             ],
         )
@@ -1417,6 +1422,7 @@ class Interface {
                 'Var[Nq]',
                 'chi²',
                 `${icc2VNq.precision.toFixed(2)}%`,
+                `${(icc2VNq.high+icc2VNq.low)/2}`,
                 `Entre <b>${icc2VNq.high}</b> e <b>${icc2VNq.low}</b>`,
             ],
         )
@@ -1948,7 +1954,11 @@ function exibeModal() {
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
+<<<<<<< HEAD
         setTimeout(function(){ resolve()}, 10);
+=======
+        setTimeout(function(){ resolve()}, 100);
+>>>>>>> 06f6ae70de0c7b01bb50ab8ceff6d5735d61ac12
     });
 }
 
@@ -1957,6 +1967,10 @@ document.getElementById('run-button').addEventListener('click', () => {
     
 
     
+<<<<<<< HEAD
+=======
+    exibeModal(); 
+>>>>>>> 06f6ae70de0c7b01bb50ab8ceff6d5735d61ac12
     exibeModal().then(function(){
         let startTime = new Date().getTime();
         let result = simulator.run(interface.getInputValues());
