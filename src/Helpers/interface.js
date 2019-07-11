@@ -1,5 +1,6 @@
 const Charts = require('./charts');
 
+//Classe responsavel por criacao da tabela com metricas
 class Interface {
 
     // Adiciona uma linha ao final da tabela indicada.
@@ -13,7 +14,7 @@ class Interface {
         newRow.innerHTML = dataRow;
     }
 
-    // Retorna o valor dos inputs do html. Caso tenha algum erro, retorna valores padrão [FCFS, 0.2, 3200, 1000].
+    // Retorna o valor dos inputs do html. Caso tenha algum erro, retorna valores padrao [FCFS, 0.2, 3200, 1000].
     static getInputValues() {
         const inputDisciplina = document.getElementById('input-disciplina');
         const inputDisciplinaValue = inputDisciplina.options[inputDisciplina.selectedIndex].value;
@@ -32,13 +33,15 @@ class Interface {
         }
     }
 
-    // Limpa conteúdo da tabela indicada.
+    // Limpa conteudo da tabela indicada.
     static clearTable(tableId) {
         document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
     }
   
 
-    // Preenche tabela de métricas por rodada
+    //Preenche tabela de metricas por rodada
+    //Nessa funcao foi estabelecido um teto para elementos na tabela, para que nao se perdesse
+    //muito tempo renderizando muitos dados. O limite de dados na tabela e 100 linhas.
     static fillMetricasTable(stats, numeroRodadas) {
 	let limiteRodadasBase = 50;
 	let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
@@ -51,7 +54,7 @@ class Interface {
         }
     }
 
-    // Cria grafico canvas com parte transient
+    // Cria grafico canvas com parte transiente
     static createLineChart(nTotal, dataPerTime, nPoints, chartId, chartAreaId) {
         
         // remove canvas antigo
@@ -85,8 +88,8 @@ class Interface {
     }
 
 
-    // Preenche tabela de IC
-    // ordem no html: parâmetro, tipo, precisão, centro, [ic]
+    // Preenche tabela de Intervalo de confianca
+    // ordem no html: parametro, tipo, precisao, centro, [ic]
     static fillICTable(stats) {
         // E[W]
         let ictEW = stats.W.getTStudentConfidenceInterval();

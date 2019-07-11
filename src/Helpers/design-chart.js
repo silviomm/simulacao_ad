@@ -1,3 +1,5 @@
+//Codigo apenas contendo informacoes visuais de exibicao e estilizacao
+//dos graficos
 module.exports = {
     red_dataset: {
         label: "",
@@ -56,10 +58,6 @@ module.exports = {
                 ticks: {
                     maxTicksLimit: 5,
                     padding: 10,
-                    // Include a dollar sign in the ticks
-                    // callback: (value, index, values) => {
-                    //     return '$' + this.number_format(value);
-                    // }
                 },
                 gridLines: {
                     color: "rgb(234, 236, 244)",

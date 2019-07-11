@@ -1,6 +1,7 @@
 const DiscreteEstimator = require('./discrete-estimator');
 const ContinuousEstimator = require('./continuous-estimator');
 
+//Classe responsavel por guardar instancias de estimadores e armazenar as metricas coletadas
 class StatsCollector {
     constructor() {
         this.round = 0;
@@ -13,13 +14,13 @@ class StatsCollector {
     }
 
     initEstimators() {
-        // estimadores das medias de cada parâmetro
+        //Estimadores das medias de cada parametro
         this.X = new DiscreteEstimator();
         this.W = new DiscreteEstimator();
         this.T = new DiscreteEstimator();
         this.Nq = new DiscreteEstimator();
 
-        // estimadores das variâncias de cada parâmetro
+        //Estimadores das variancias de cada parametro
         this.vX = new DiscreteEstimator();
         this.vW = new DiscreteEstimator();
         this.vT = new DiscreteEstimator();
@@ -50,10 +51,10 @@ class StatsCollector {
     }
 
     resetRoundEstimators(time) {
-        // salvando as metricas de cada rodada antes de resetar(menos no tempo 0 que é a inicialização)
+        //Salvando as metricas de cada rodada antes de resetar(menos no tempo 0 que e a inicializacao)
         this.saveRoundStats(time);
 
-        // reset coletores de estatisticas dos rounds
+        //Reseta coletores de estatisticas dos rounds
         this.rX = new DiscreteEstimator();
         this.rW = new DiscreteEstimator();
         this.rT = new DiscreteEstimator();
@@ -78,13 +79,13 @@ class StatsCollector {
     nextRound(time) {
         this.round += 1;
 
-        // amostras das médias da rodada
+        //Amostras das medias da rodada
         this.X.sample(this.rX.getAverage());
         this.W.sample(this.rW.getAverage());
         this.T.sample(this.rT.getAverage());
         this.Nq.sample(this.rNq.getAverage(time));
 
-        // amostras das variâncias da rodada
+        //Amostras das variancias da rodada
         this.vX.sample(this.rX.getVariance());
         this.vW.sample(this.rW.getVariance());
         this.vT.sample(this.rT.getVariance());
