@@ -12,6 +12,7 @@
   "dependencies": {
     "browserify": "^16.2.3",
     "inv-chisquare-cdf": "^1.0.0",
+    "jquery": "^3.4.1",
     "seedrandom": "^3.0.1"
   }
 }
