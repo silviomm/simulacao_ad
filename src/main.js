@@ -16,7 +16,7 @@ function exibeModal() {
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
-        setTimeout(function(){ resolve()}, 100);
+        setTimeout(function(){ resolve()}, 10);
     });
 }
 
@@ -25,7 +25,6 @@ document.getElementById('run-button').addEventListener('click', () => {
     
 
     
-    exibeModal(); 
     exibeModal().then(function(){
         let startTime = new Date().getTime();
         let result = simulator.run(interface.getInputValues());

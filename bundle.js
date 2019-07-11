@@ -1308,10 +1308,14 @@ class Interface {
     static clearTable(tableId) {
         document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
     }
+  
 
     // Preenche tabela de métricas por rodada
-    static fillMetricasTable(stats) {
-        for (let i = 0; i < stats.perRound.length; i++) {
+    static fillMetricasTable(stats, numeroRodadas) {
+	let limiteRodadasBase = 50;
+	let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
+	console.log(passo);
+        for (let i = 0; i < stats.perRound.length; i+=passo) {
             const s = stats.perRound[i];
             // ordem no html: round, (avg e var)(x, w, t, nq)
             let statsValues = [s.round, s.X.avg, s.X.var, s.W.avg, s.W.var, s.T.avg, s.T.var, s.Nq.avg, s.Nq.var];
@@ -1420,6 +1424,7 @@ class Interface {
 }
 
 module.exports = Interface;
+
 },{"./charts":15}],18:[function(require,module,exports){
 const seedrandom = require('seedrandom');
 const chi2inv = require('inv-chisquare-cdf');
@@ -1938,46 +1943,72 @@ const interface = require('./Helpers/interface');
 // Lógica principal do simulador
 const simulator = require('./Simulator/simulator');
 
+function exibeModal() {
+
+    return new Promise(function (resolve, reject) {
+
+        document.getElementById('loader').style.display = "block";
+        setTimeout(function(){ resolve()}, 10);
+    });
+}
+
 // Adiciona evento de 'click' no botão de play.
 document.getElementById('run-button').addEventListener('click', () => {
+    
 
-    let startTime = new Date().getTime();
-    let result = simulator.run(interface.getInputValues());
-    let endTime = new Date().getTime();
+    
+    exibeModal().then(function(){
+        let startTime = new Date().getTime();
+        let result = simulator.run(interface.getInputValues());
 
-    console.log('tempo simulacao: ', (endTime - startTime) / 1000);
-    startTime = new Date().getTime();
+        let input = interface.getInputValues();
+        console.log(result);
+        let numeroRodadas = input.rodadas;
+        let endTime = new Date().getTime();
 
-    // Preenche tabela de IC
-    interface.clearTable('ic-table');
-    interface.fillICTable(result.stats);
+        console.log('tempo simulacao: ', (endTime - startTime) / 1000);
+        startTime = new Date().getTime();
 
-    // Preenche tabela de métricas
-    interface.clearTable('metricas-table');
-    interface.addTableRow('metricas-table', {
-        'rodada': `<b>MÉDIA</b>`,
-        'X': `<b>${result.stats.X.getAverage().toFixed(5)}</b>`,
-        'vX': `<b>${result.stats.vX.getAverage().toFixed(5)}</b>`,
-        'W': `<b>${result.stats.W.getAverage().toFixed(5)}</b>`,
-        'vW': `<b>${result.stats.vW.getAverage().toFixed(5)}</b>`,
-        'T': `<b>${result.stats.T.getAverage().toFixed(5)}</b>`,
-        'vT': `<b>${result.stats.vT.getAverage().toFixed(5)}</b>`,
-        'Nq': `<b>${result.stats.Nq.getAverage().toFixed(5)}</b>`,
-        'vNq': `<b>${result.stats.vNq.getAverage().toFixed(5)}</b>`,
-    });
-    // interface.fillMetricasTable(result.stats);
+        // Preenche tabela de IC
+        interface.clearTable('ic-table');
+        interface.fillICTable(result.stats);
+        console.log(result.stats);
+        // Preenche tabela de métricas
+        interface.clearTable('metricas-table');
+        interface.fillMetricasTable(result.stats, numeroRodadas);
 
-    // graficos
-    // grafico do artine antigo: interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
-    interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
-    interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
+        interface.addTableRow('metricas-table', {
+            'rodada': `<b>MÉDIA</b>`,
+            'X': `<b>${result.stats.X.getAverage().toFixed(5)}</b>`,
+            'vX': `<b>${result.stats.vX.getAverage().toFixed(5)}</b>`,
+            'W': `<b>${result.stats.W.getAverage().toFixed(5)}</b>`,
+            'vW': `<b>${result.stats.vW.getAverage().toFixed(5)}</b>`,
+            'T': `<b>${result.stats.T.getAverage().toFixed(5)}</b>`,
+            'vT': `<b>${result.stats.vT.getAverage().toFixed(5)}</b>`,
+            'Nq': `<b>${result.stats.Nq.getAverage().toFixed(5)}</b>`,
+            'vNq': `<b>${result.stats.vNq.getAverage().toFixed(5)}</b>`,
+        });
 
-    endTime = new Date().getTime();
+        // graficos
+        // grafico do artine antigo: interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
+        interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
+        interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
 
-    console.log('tempo renderização: ', (endTime - startTime) / 1000);
+        endTime = new Date().getTime();
 
+        console.log('tempo renderização: ', (endTime - startTime) / 1000);
+        document.getElementById('loader').style.display = "none";
+    })
+   
 
+    // piru = new Promise((resolve) => {
+    //     resolve(document.getElementById('loader').style.display = "block");
+    // })
+    //     .then(function () {
+    //         fazSimulacao();
+    //         document.getElementById('loader').style.display = "none";
+    //     });
 
-});
+})
 
 },{"./Helpers/interface":17,"./Simulator/simulator":23}]},{},[27]);
