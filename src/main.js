@@ -18,16 +18,13 @@ function exibeModal() {
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
-        setTimeout(function(){ resolve()}, 100);
+        setTimeout(function(){ resolve(); }, 100);
     });
 }
 
 // Adiciona evento de 'click' no botão de play e executa o simulador.
 document.getElementById('run-button').addEventListener('click', () => {
-    
-
-    
-    exibeModal().then(function(){
+    exibeModal().then(function() {
 
         //Pega momento de início de simulação
         let startTime = new Date().getTime();
@@ -79,6 +76,5 @@ document.getElementById('run-button').addEventListener('click', () => {
 
         //Desliga o loader
         document.getElementById('loader').style.display = "none";
-    })
-   
-})
+    });
+});

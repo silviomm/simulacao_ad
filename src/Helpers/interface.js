@@ -9,7 +9,7 @@ class Interface {
         let newRow = table.insertRow(-1);
         let dataRow = '';
         for (const prop in obj) {
-            dataRow += `<td style="text-align: center">${obj[prop]}</td>`
+            dataRow += `<td style="text-align: center">${obj[prop]}</td>`;
         }
         newRow.innerHTML = dataRow;
     }
@@ -22,7 +22,6 @@ class Interface {
         const inputRodadasValue = document.getElementById('input-rodadas').value;
         const inputFreguesesValue = document.getElementById('input-fregueses').value;
         const inputTransienteValue = document.getElementById('input-transiente').value;
-        
 
         return {
             'disciplina': inputDisciplinaValue || 'FCFS',
@@ -30,22 +29,21 @@ class Interface {
             'rodadas': inputRodadasValue || 3200,
             'fregueses': inputFreguesesValue || 1000,
             'transiente': inputTransienteValue || 15000
-        }
+        };
     }
 
     // Limpa conteudo da tabela indicada.
     static clearTable(tableId) {
         document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
     }
-  
 
     //Preenche tabela de metricas por rodada
     //Nessa funcao foi estabelecido um teto para elementos na tabela, para que nao se perdesse
     //muito tempo renderizando muitos dados. O limite de dados na tabela e 100 linhas.
     static fillMetricasTable(stats, numeroRodadas) {
-	let limiteRodadasBase = 50;
-	let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
-	console.log(passo);
+        let limiteRodadasBase = 50;
+        let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
+        console.log(passo);
         for (let i = 0; i < stats.perRound.length; i+=passo) {
             const s = stats.perRound[i];
             // ordem no html: round, (avg e var)(x, w, t, nq)
@@ -100,7 +98,7 @@ class Interface {
                 `${(ictEW.high+ictEW.low)/2}`,
                 `Entre <b>${ictEW.high}</b> e <b>${ictEW.low}</b>`,
             ],
-        )
+        );
         // Var[W] tstudent
         let ictVW = stats.vW.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
@@ -111,7 +109,7 @@ class Interface {
                 `${(ictVW.high+ictVW.low)/2}`,
                 `Entre <b>${ictVW.high}</b> e <b>${ictVW.low}<b>`,
             ],
-        )
+        );
         // Var[W] chi2
         let icc2VW = stats.vW.getChi2ConfidenceInterval();
         this.addTableRow('ic-table',
@@ -122,7 +120,7 @@ class Interface {
                 `${(icc2VW.high+icc2VW.low)/2}`,
                 `Entre <b>${icc2VW.high}</b> e <b>${icc2VW.low}</b>`,
             ],
-        )
+        );
         // E[Nq]
         let ictENq = stats.Nq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
@@ -133,7 +131,7 @@ class Interface {
                 `${(ictENq.high+ictENq.low)/2}`,
                 `Entre <b>${ictENq.high}</b> e <b>${ictENq.low}</b>`,
             ],
-        )
+        );
         // Var[Nq] tstudent
         let ictVNq = stats.vNq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
@@ -144,7 +142,7 @@ class Interface {
                 `${(ictVNq.high+ictVNq.low)/2}`,
                 `Entre <b>${ictVNq.high}</b> e <b>${ictVNq.low}</b>`,
             ],
-        )
+        );
         // Var[Nq] chi2
         let icc2VNq = stats.vNq.getChi2ConfidenceInterval();
         this.addTableRow('ic-table',
@@ -155,7 +153,7 @@ class Interface {
                 `${(icc2VNq.high+icc2VNq.low)/2}`,
                 `Entre <b>${icc2VNq.high}</b> e <b>${icc2VNq.low}</b>`,
             ],
-        )
+        );
     }
 }
 
