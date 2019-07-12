@@ -52,7 +52,7 @@ module.exports = {
     run: (inputs) => {
         // Inicia com os valores de input
         const numRodadas = inputs.rodadas;
-        const numFregueses = inputs.fregueses;
+        let numFregueses = inputs.fregueses;
         const numTransiente = inputs.transiente;
         const nrodadas = inputs.rodadas;
 
@@ -61,6 +61,8 @@ module.exports = {
 
         let nqIter = [];
         let wIter = [];
+        let nqTrans = [];
+        let wTrans = [];
         let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
 
         // server exponencial
@@ -71,14 +73,33 @@ module.exports = {
         // let generator = new ArrivalGenerator(inputs.rho, utils.getDeterministic);
         // let server = new Server(1, utils.alternate([1.5, 0.1]));
 
-
         let stats = new StatsCollector();
         let currentTime = 0;
         let departuresTotal = 0;
 
         let nextArrival = generator.getNext();
 
-        for (let i = 0; i < nrodadas; i++) {
+        for (let i = -1; i < nrodadas; i++) {
+
+            if (i == -1) {
+                if (inputs.rho <= 0.7) {
+                    // 50000 para cada 0.1 de rho
+                    numFregueses = 500000 * inputs.rho;
+                } else {
+                    // +25% por 0.1 acima de 0.6
+                    let fatorAumento = (inputs.rho - 0.6) * 2.5;
+                    // +50% para 0.8, +100% para 0.9
+                    //let fatorAumento = 0.25 * Math.pow(2, 10 * (inputs.rho - 0.7));
+                    numFregueses = 500000 * inputs.rho * (1 + fatorAumento);
+                }
+                console.log("transiente com", numFregueses);
+            }
+
+            if (i == 0) {
+                console.log('total pos trans', departuresTotal);
+                numFregueses = inputs.fregueses;
+            }
+
             let arrivals = 0;
             let departures = 0;
 
@@ -141,8 +162,14 @@ module.exports = {
 
                         departuresTotal += 1;
 
-                        if (timeToCollect(departuresTotal, calc.intervalo, calc.totalFreguesesGrafico))
-                            colectData(stats, currentTime, wIter, nqIter);
+                        if (timeToCollect(departuresTotal, calc.intervalo, calc.totalFreguesesGrafico)) {
+                            if (i != -1) {
+                                colectData(stats, currentTime, wIter, nqIter);
+                            } else {
+                                colectData(stats, currentTime, wTrans, nqTrans);
+                            }
+                            // colectData(stats, currentTime, wIter, nqIter);
+                        }
                     }
                 }
             }
@@ -156,6 +183,8 @@ module.exports = {
             'stats': stats,
             'nqIter': nqIter,
             'wIter': wIter,
+            nqTrans: nqTrans,
+            wTrans: wTrans,
             'numPontos': calc.numPontos,
             'totalId': calc.numPontos * calc.intervalo
         };

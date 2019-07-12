@@ -69,8 +69,8 @@ document.getElementById('run-button').addEventListener('click', () => {
 
 
         //Chamada de funções para exibição de gráficos
-        interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1', 'Nq : #Fregueses');
-        interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2', 'W : #Fregueses');
+        interface.createLineChart(result.totalId, result.nqIter, result.nqTrans, result.numPontos, 'chart-1', 'chart-area-1', 'Nq : #Fregueses');
+        interface.createLineChart(result.totalId, result.wIter, result.wTrans, result.numPontos, 'chart-2', 'chart-area-2', 'W : #Fregueses');
 
         //Pega o momento de finalização de exibição de métricas
         endTime = new Date().getTime();

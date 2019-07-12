@@ -55,8 +55,7 @@ class Interface {
     }
 
     // Cria grafico canvas com parte transiente
-    static createLineChart(nTotal, dataPerTime, nPoints, chartId, chartAreaId, tooltipTitle) {
-        
+    static createLineChart(nTotal, dataPerTime, transientDataPerTime, nPoints, chartId, chartAreaId, tooltipTitle) {
         // remove canvas antigo
         let oldcanv = document.getElementById(chartId);
         let canvarea = document.getElementById(chartAreaId);
@@ -74,20 +73,19 @@ class Interface {
             labelArray[i] = i * interval;
         }
 
-        const transientPoints = Math.round(nPoints / 7);
+        const transientPoints = transientDataPerTime.length;
 
         Charts.createLineChart(
             labelArray, {
                 // 'transient': dataPerTime.slice(0, transientPoints),
-                'transient': null,
-                // 'normal': Array(transientPoints - 1).fill(null).concat(dataPerTime.slice(transientPoints, nPoints))
-                'normal': dataPerTime
+                'transient': transientDataPerTime,
+                'normal': Array(transientPoints).fill(null).concat(dataPerTime),
+                //'normal': dataPerTime
             },
             chartId,
             tooltipTitle
         );
     }
-
 
     // Preenche tabela de Intervalo de confianca
     // ordem no html: parametro, tipo, precisao, centro, [ic]
