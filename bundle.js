@@ -1139,16 +1139,17 @@ if ((typeof module) == 'object' && module.exports) {
 },{"crypto":1}],15:[function(require,module,exports){
 const designChart = require('./design-chart');
 
+//Classe responsavel por criar as linhas utilizadas nos gráficos
 class Charts {
 
     static createLineChart(labels, series, chartId) {
 
-        // definindo parte transient do grafico
+        // definindo parte transiente do grafico
         const transient = designChart.red_dataset;
         transient.data = series.transient;
         transient.label = 'transient';
 
-        // definindo parte "normal" do grafico
+        // definindo parte não transiente do grafico
         const normal = designChart.blue_dataset;
         normal.data = series.normal;
         normal.label = 'normal';
@@ -1169,6 +1170,8 @@ class Charts {
 
 module.exports = Charts;
 },{"./design-chart":16}],16:[function(require,module,exports){
+//Codigo apenas contendo informacoes visuais de exibicao e estilizacao
+//dos graficos
 module.exports = {
     red_dataset: {
         label: "",
@@ -1227,10 +1230,6 @@ module.exports = {
                 ticks: {
                     maxTicksLimit: 5,
                     padding: 10,
-                    // Include a dollar sign in the ticks
-                    // callback: (value, index, values) => {
-                    //     return '$' + this.number_format(value);
-                    // }
                 },
                 gridLines: {
                     color: "rgb(234, 236, 244)",
@@ -1272,6 +1271,7 @@ module.exports = {
 },{}],17:[function(require,module,exports){
 const Charts = require('./charts');
 
+//Classe responsavel por criacao da tabela com metricas
 class Interface {
 
     // Adiciona uma linha ao final da tabela indicada.
@@ -1285,7 +1285,7 @@ class Interface {
         newRow.innerHTML = dataRow;
     }
 
-    // Retorna o valor dos inputs do html. Caso tenha algum erro, retorna valores padrão [FCFS, 0.2, 3200, 1000].
+    // Retorna o valor dos inputs do html. Caso tenha algum erro, retorna valores padrao [FCFS, 0.2, 3200, 1000].
     static getInputValues() {
         const inputDisciplina = document.getElementById('input-disciplina');
         const inputDisciplinaValue = inputDisciplina.options[inputDisciplina.selectedIndex].value;
@@ -1304,13 +1304,15 @@ class Interface {
         }
     }
 
-    // Limpa conteúdo da tabela indicada.
+    // Limpa conteudo da tabela indicada.
     static clearTable(tableId) {
         document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
     }
   
 
-    // Preenche tabela de métricas por rodada
+    //Preenche tabela de metricas por rodada
+    //Nessa funcao foi estabelecido um teto para elementos na tabela, para que nao se perdesse
+    //muito tempo renderizando muitos dados. O limite de dados na tabela e 100 linhas.
     static fillMetricasTable(stats, numeroRodadas) {
 	let limiteRodadasBase = 50;
 	let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
@@ -1323,7 +1325,7 @@ class Interface {
         }
     }
 
-    // Cria grafico canvas com parte transient
+    // Cria grafico canvas com parte transiente
     static createLineChart(nTotal, dataPerTime, nPoints, chartId, chartAreaId) {
         
         // remove canvas antigo
@@ -1357,8 +1359,8 @@ class Interface {
     }
 
 
-    // Preenche tabela de IC
-    // ordem no html: parâmetro, tipo, precisão, centro, [ic]
+    // Preenche tabela de Intervalo de confianca
+    // ordem no html: parametro, tipo, precisao, centro, [ic]
     static fillICTable(stats) {
         // E[W]
         let ictEW = stats.W.getTStudentConfidenceInterval();
@@ -1435,8 +1437,10 @@ module.exports = Interface;
 const seedrandom = require('seedrandom');
 const chi2inv = require('inv-chisquare-cdf');
 const random = seedrandom('semente');
-
+//Classe contendo funções úteis para o programa
 module.exports = {
+
+    //Função que retorna um número aleatório exponencial
     getRandomExp: (rate) => {
         return -Math.log(1 - random()) / rate;
     },
@@ -1458,29 +1462,37 @@ module.exports = {
         };
     },
 
+    
     getInverseChiSquaredCDF(probability, degreeOfFreedom) {
         return chi2inv.invChiSquareCDF(probability, degreeOfFreedom);
     }
 };
 
 },{"inv-chisquare-cdf":2,"seedrandom":7}],19:[function(require,module,exports){
+//Classe representando uma First Come First Served
 class FCFSQueue {
+
+    //Fila inicializada vazia
     constructor() {
         this.queue = [];
     }
 
+    //Coloca um fregues na fila
     put(elt) {
         return this.queue.unshift(elt);
     }
 
+    //Olha o ultimo fregues da fila.
     peek() {
         return this.queue[this.queue.length - 1];
     }
 
+    //Retira o proximo fregues a ser atendido.
     get() {
         return this.queue.pop();
     }
 
+    //Retorna o tamanho da fila
     length() {
         return this.queue.length;
     }
@@ -1488,23 +1500,30 @@ class FCFSQueue {
 
 module.exports = FCFSQueue;
 },{}],20:[function(require,module,exports){
+//Classe representando uma Last Come First Served
 class LCFSQueue {
+
+    //Fila inicializada vazia
     constructor() {
         this.queue = [];
     }
 
+    //Coloca um fregues na fila
     put(elt) {
         return this.queue.push(elt);
     }
 
+    //Olha o ultimo fregues da fila. No caso o proximo a ser atendido.
     peek() {
         return this.queue[0];
     }
 
+    //Retira o proximo fregues a ser atendido.
     get() {
         return this.queue.pop();
     }
 
+    //Retorna o tamanho da fila
     length() {
         return this.queue.length;
     }
@@ -1605,7 +1624,7 @@ function exitServer(server) {
 
 function calcNumberOfPoints(numFregueses, numRodadas) {
     let numPontos = 200;
-    if (numFregueses * numRodadas < numPontos)
+    if (numFregueses * numRodadas <= numPontos)
         numPontos = numFregueses * numRodadas;
     let intervalo = parseInt((numFregueses * numRodadas) / numPontos, 10);
     numPontos = parseInt((numFregueses * numRodadas) / intervalo, 10);
@@ -1843,6 +1862,7 @@ module.exports = DiscreteEstimator;
 const DiscreteEstimator = require('./discrete-estimator');
 const ContinuousEstimator = require('./continuous-estimator');
 
+//Classe responsavel por guardar instancias de estimadores e armazenar as metricas coletadas
 class StatsCollector {
     constructor() {
         this.round = 0;
@@ -1855,13 +1875,13 @@ class StatsCollector {
     }
 
     initEstimators() {
-        // estimadores das medias de cada parâmetro
+        //Estimadores das medias de cada parametro
         this.X = new DiscreteEstimator();
         this.W = new DiscreteEstimator();
         this.T = new DiscreteEstimator();
         this.Nq = new DiscreteEstimator();
 
-        // estimadores das variâncias de cada parâmetro
+        //Estimadores das variancias de cada parametro
         this.vX = new DiscreteEstimator();
         this.vW = new DiscreteEstimator();
         this.vT = new DiscreteEstimator();
@@ -1892,10 +1912,10 @@ class StatsCollector {
     }
 
     resetRoundEstimators(time) {
-        // salvando as metricas de cada rodada antes de resetar(menos no tempo 0 que é a inicialização)
+        //Salvando as metricas de cada rodada antes de resetar(menos no tempo 0 que e a inicializacao)
         this.saveRoundStats(time);
 
-        // reset coletores de estatisticas dos rounds
+        //Reseta coletores de estatisticas dos rounds
         this.rX = new DiscreteEstimator();
         this.rW = new DiscreteEstimator();
         this.rT = new DiscreteEstimator();
@@ -1920,13 +1940,13 @@ class StatsCollector {
     nextRound(time) {
         this.round += 1;
 
-        // amostras das médias da rodada
+        //Amostras das medias da rodada
         this.X.sample(this.rX.getAverage());
         this.W.sample(this.rW.getAverage());
         this.T.sample(this.rT.getAverage());
         this.Nq.sample(this.rNq.getAverage(time));
 
-        // amostras das variâncias da rodada
+        //Amostras das variancias da rodada
         this.vX.sample(this.rX.getVariance());
         this.vW.sample(this.rW.getVariance());
         this.vT.sample(this.rT.getVariance());
@@ -1954,6 +1974,8 @@ const simulator = require('./Simulator/simulator');
 
 function exibeModal() {
 
+    //Promise feita para aguardar a exibição do modal
+    //de carregamento antes de executar a lógica do simulador
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
@@ -1961,31 +1983,40 @@ function exibeModal() {
     });
 }
 
-// Adiciona evento de 'click' no botão de play.
+// Adiciona evento de 'click' no botão de play e executa o simulador.
 document.getElementById('run-button').addEventListener('click', () => {
     
 
     
     exibeModal().then(function(){
+
+        //Pega momento de início de simulação
         let startTime = new Date().getTime();
+
+        //Guarda os resultados da simulação na variável result
         let result = simulator.run(interface.getInputValues());
 
+        //Pega o número de rodadas e guarda para exibição de tabelas
         let input = interface.getInputValues();
-        console.log(result);
         let numeroRodadas = input.rodadas;
+
+        //Pega o momento de finalização de simulação
         let endTime = new Date().getTime();
 
+        //Exibe tempo de simulação
         console.log('tempo simulacao: ', (endTime - startTime) / 1000);
+
+        //Pega momento de início de geração de tabelas com resultados
         startTime = new Date().getTime();
 
         // Preenche tabela de IC
         interface.clearTable('ic-table');
         interface.fillICTable(result.stats);
-        console.log(result.stats);
         // Preenche tabela de métricas
         interface.clearTable('metricas-table');
         interface.fillMetricasTable(result.stats, numeroRodadas);
 
+        //Adiciona uma última coluna contendo a média das métricas calculadas
         interface.addTableRow('metricas-table', {
             'rodada': `<b>MÉDIA</b>`,
             'X': `<b>${result.stats.X.getAverage().toFixed(5)}</b>`,
@@ -1998,26 +2029,19 @@ document.getElementById('run-button').addEventListener('click', () => {
             'vNq': `<b>${result.stats.vNq.getAverage().toFixed(5)}</b>`,
         });
 
-        // graficos
-        // grafico do artine antigo: interface.geraGrafico(result.totalId, result.nqIter, result.numPontos, '#chartNq1');
+        //Chamada de funções para exibição de gráficos
         interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
         interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
 
+        //Pega o momento de finalização de exibição de métricas
         endTime = new Date().getTime();
 
         console.log('tempo renderização: ', (endTime - startTime) / 1000);
+
+        //Desliga o loader
         document.getElementById('loader').style.display = "none";
     })
    
-
-    // piru = new Promise((resolve) => {
-    //     resolve(document.getElementById('loader').style.display = "block");
-    // })
-    //     .then(function () {
-    //         fazSimulacao();
-    //         document.getElementById('loader').style.display = "none";
-    //     });
-
 })
 
 },{"./Helpers/interface":17,"./Simulator/simulator":23}]},{},[27]);

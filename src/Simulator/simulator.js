@@ -26,7 +26,7 @@ function exitServer(server) {
 
 function calcNumberOfPoints(numFregueses, numRodadas) {
     let numPontos = 200;
-    if (numFregueses * numRodadas < numPontos)
+    if (numFregueses * numRodadas <= numPontos)
         numPontos = numFregueses * numRodadas;
     let intervalo = parseInt((numFregueses * numRodadas) / numPontos, 10);
     numPontos = parseInt((numFregueses * numRodadas) / intervalo, 10);
