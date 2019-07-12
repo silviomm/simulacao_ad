@@ -56,6 +56,7 @@ module.exports = {
         const numTransiente = inputs.transiente;
         const nrodadas = inputs.rodadas;
 
+
         // Determina quantos pontos serão plotados nos gráficos
         let calc = calcNumberOfPoints(numFregueses, numRodadas);
 
@@ -82,17 +83,22 @@ module.exports = {
         for (let i = -1; i < nrodadas; i++) {
 
             if (i == -1) {
-                if (inputs.rho <= 0.7) {
-                    // 50000 para cada 0.1 de rho
-                    numFregueses = 500000 * inputs.rho;
-                } else {
-                    // +25% por 0.1 acima de 0.6
-                    let fatorAumento = (inputs.rho - 0.6) * 2.5;
-                    // +50% para 0.8, +100% para 0.9
-                    //let fatorAumento = 0.25 * Math.pow(2, 10 * (inputs.rho - 0.7));
-                    numFregueses = 500000 * inputs.rho * (1 + fatorAumento);
+                if(numTransiente == "") {
+                    if (inputs.rho <= 0.7) {
+                        // 50000 para cada 0.1 de rho
+                        numFregueses = 500000 * inputs.rho;
+                    } else {
+                        // +25% por 0.1 acima de 0.6
+                        let fatorAumento = (inputs.rho - 0.6) * 2.5;
+                        // +50% para 0.8, +100% para 0.9
+                        //let fatorAumento = 0.25 * Math.pow(2, 10 * (inputs.rho - 0.7));
+                        numFregueses = 500000 * inputs.rho * (1 + fatorAumento);
+                    }
                 }
-                console.log("transiente com", numFregueses);
+                else {
+                    numFregueses = numTransiente;
+                }
+                console.log("transient: ", numFregueses)
             }
 
             if (i == 0) {

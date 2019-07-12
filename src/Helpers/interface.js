@@ -21,14 +21,14 @@ class Interface {
         const inputRhoValue = document.getElementById('input-rho').value;
         const inputRodadasValue = document.getElementById('input-rodadas').value;
         const inputFreguesesValue = document.getElementById('input-fregueses').value;
-        const inputTransienteValue = document.getElementById('input-transiente').value;
+        let inputTransienteValue = document.getElementById('input-transiente').value;
 
         return {
             'disciplina': inputDisciplinaValue || 'FCFS',
             'rho': inputRhoValue || 0.2,
             'rodadas': inputRodadasValue || 3200,
             'fregueses': inputFreguesesValue || 1000,
-            'transiente': inputTransienteValue || 15000
+            'transiente': inputTransienteValue
         };
     }
 
