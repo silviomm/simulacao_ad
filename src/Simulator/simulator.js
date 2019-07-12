@@ -86,10 +86,10 @@ module.exports = {
                 if(numTransiente == "") {
                     if (inputs.rho <= 0.7) {
                         // 50000 para cada 0.1 de rho
-                        numFregueses = 500000 * inputs.rho;
+                        numFregueses = 1000000 * inputs.rho;
                     } else {
                         // +25% por 0.1 acima de 0.6
-                        let fatorAumento = (inputs.rho - 0.6) * 2.5;
+                        let fatorAumento = (inputs.rho - 0.6) * 5;
                         // +50% para 0.8, +100% para 0.9
                         //let fatorAumento = 0.25 * Math.pow(2, 10 * (inputs.rho - 0.7));
                         numFregueses = 500000 * inputs.rho * (1 + fatorAumento);
