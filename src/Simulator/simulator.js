@@ -190,7 +190,8 @@ module.exports = {
             // console.log("arrivals", arrivals);
             // console.log("departures", departures);
 
-            stats.nextRound(currentTime);
+            if (!(i == -1 && numTransiente == 0))
+                stats.nextRound(currentTime);
         }
 
         let resultado = {

@@ -1317,7 +1317,6 @@ class Interface {
     static fillMetricasTable(stats, numeroRodadas) {
         let limiteRodadasBase = 50;
         let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
-        console.log(passo);
         for (let i = 0; i < stats.perRound.length; i+=passo) {
             const s = stats.perRound[i];
             // ordem no html: round, (avg e var)(x, w, t, nq)
@@ -1788,7 +1787,8 @@ module.exports = {
             // console.log("arrivals", arrivals);
             // console.log("departures", departures);
 
-            stats.nextRound(currentTime);
+            if (!(i == -1 && numTransiente == 0))
+                stats.nextRound(currentTime);
         }
 
         let resultado = {
