@@ -1142,7 +1142,7 @@ const designChart = require('./design-chart');
 //Classe responsavel por criar as linhas utilizadas nos gráficos
 class Charts {
 
-    static createLineChart(labels, series, chartId) {
+    static createLineChart(labels, series, chartId, tooltipTitle) {
 
         // definindo parte transiente do grafico
         const transient = designChart.red_dataset;
@@ -1156,6 +1156,9 @@ class Charts {
 
         const datasets = [transient, normal]
 
+        let options = designChart.chartOptions;
+        options.tooltips.callbacks.title = () => {return tooltipTitle};
+
         var ctx = document.getElementById(chartId);
         new Chart(ctx, {
             type: 'line',
@@ -1163,7 +1166,7 @@ class Charts {
                 labels: labels,
                 datasets: datasets
             },
-            options: designChart.chartOptions
+            options: options
         });
     }
 }
@@ -1280,7 +1283,7 @@ class Interface {
         let newRow = table.insertRow(-1);
         let dataRow = '';
         for (const prop in obj) {
-            dataRow += `<td style="text-align: center">${obj[prop]}</td>`
+            dataRow += `<td style="text-align: center">${obj[prop]}</td>`;
         }
         newRow.innerHTML = dataRow;
     }
@@ -1293,7 +1296,6 @@ class Interface {
         const inputRodadasValue = document.getElementById('input-rodadas').value;
         const inputFreguesesValue = document.getElementById('input-fregueses').value;
         const inputTransienteValue = document.getElementById('input-transiente').value;
-        
 
         return {
             'disciplina': inputDisciplinaValue || 'FCFS',
@@ -1301,22 +1303,21 @@ class Interface {
             'rodadas': inputRodadasValue || 3200,
             'fregueses': inputFreguesesValue || 1000,
             'transiente': inputTransienteValue || 15000
-        }
+        };
     }
 
     // Limpa conteudo da tabela indicada.
     static clearTable(tableId) {
         document.getElementById(tableId).getElementsByTagName('tbody')[0].innerHTML = "";
     }
-  
 
     //Preenche tabela de metricas por rodada
     //Nessa funcao foi estabelecido um teto para elementos na tabela, para que nao se perdesse
     //muito tempo renderizando muitos dados. O limite de dados na tabela e 100 linhas.
     static fillMetricasTable(stats, numeroRodadas) {
-	let limiteRodadasBase = 50;
-	let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
-	console.log(passo);
+        let limiteRodadasBase = 50;
+        let passo = numeroRodadas <= limiteRodadasBase*2 ? 1 : Math.trunc(numeroRodadas/limiteRodadasBase);
+        console.log(passo);
         for (let i = 0; i < stats.perRound.length; i+=passo) {
             const s = stats.perRound[i];
             // ordem no html: round, (avg e var)(x, w, t, nq)
@@ -1326,8 +1327,7 @@ class Interface {
     }
 
     // Cria grafico canvas com parte transiente
-    static createLineChart(nTotal, dataPerTime, nPoints, chartId, chartAreaId) {
-        
+    static createLineChart(nTotal, dataPerTime, transientDataPerTime, nPoints, chartId, chartAreaId, tooltipTitle) {
         // remove canvas antigo
         let oldcanv = document.getElementById(chartId);
         let canvarea = document.getElementById(chartAreaId);
@@ -1345,19 +1345,19 @@ class Interface {
             labelArray[i] = i * interval;
         }
 
-        const transientPoints = Math.round(nPoints / 7);
+        const transientPoints = transientDataPerTime.length;
 
         Charts.createLineChart(
             labelArray, {
                 // 'transient': dataPerTime.slice(0, transientPoints),
-                'transient': null,
-                // 'normal': Array(transientPoints - 1).fill(null).concat(dataPerTime.slice(transientPoints, nPoints))
-                'normal': dataPerTime
+                'transient': transientDataPerTime,
+                'normal': Array(transientPoints).fill(null).concat(dataPerTime),
+                //'normal': dataPerTime
             },
-            chartId
+            chartId,
+            tooltipTitle
         );
     }
-
 
     // Preenche tabela de Intervalo de confianca
     // ordem no html: parametro, tipo, precisao, centro, [ic]
@@ -1372,7 +1372,7 @@ class Interface {
                 `${(ictEW.high+ictEW.low)/2}`,
                 `Entre <b>${ictEW.high}</b> e <b>${ictEW.low}</b>`,
             ],
-        )
+        );
         // Var[W] tstudent
         let ictVW = stats.vW.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
@@ -1383,7 +1383,7 @@ class Interface {
                 `${(ictVW.high+ictVW.low)/2}`,
                 `Entre <b>${ictVW.high}</b> e <b>${ictVW.low}<b>`,
             ],
-        )
+        );
         // Var[W] chi2
         let icc2VW = stats.vW.getChi2ConfidenceInterval();
         this.addTableRow('ic-table',
@@ -1394,7 +1394,7 @@ class Interface {
                 `${(icc2VW.high+icc2VW.low)/2}`,
                 `Entre <b>${icc2VW.high}</b> e <b>${icc2VW.low}</b>`,
             ],
-        )
+        );
         // E[Nq]
         let ictENq = stats.Nq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
@@ -1405,7 +1405,7 @@ class Interface {
                 `${(ictENq.high+ictENq.low)/2}`,
                 `Entre <b>${ictENq.high}</b> e <b>${ictENq.low}</b>`,
             ],
-        )
+        );
         // Var[Nq] tstudent
         let ictVNq = stats.vNq.getTStudentConfidenceInterval();
         this.addTableRow('ic-table',
@@ -1416,7 +1416,7 @@ class Interface {
                 `${(ictVNq.high+ictVNq.low)/2}`,
                 `Entre <b>${ictVNq.high}</b> e <b>${ictVNq.low}</b>`,
             ],
-        )
+        );
         // Var[Nq] chi2
         let icc2VNq = stats.vNq.getChi2ConfidenceInterval();
         this.addTableRow('ic-table',
@@ -1427,7 +1427,7 @@ class Interface {
                 `${(icc2VNq.high+icc2VNq.low)/2}`,
                 `Entre <b>${icc2VNq.high}</b> e <b>${icc2VNq.low}</b>`,
             ],
-        )
+        );
     }
 }
 
@@ -1650,7 +1650,7 @@ module.exports = {
     run: (inputs) => {
         // Inicia com os valores de input
         const numRodadas = inputs.rodadas;
-        const numFregueses = inputs.fregueses;
+        let numFregueses = inputs.fregueses;
         const numTransiente = inputs.transiente;
         const nrodadas = inputs.rodadas;
 
@@ -1659,6 +1659,8 @@ module.exports = {
 
         let nqIter = [];
         let wIter = [];
+        let nqTrans = [];
+        let wTrans = [];
         let queue = inputs.disciplina === 'FCFS' ? new FCFSQueue() : new LCFSQueue();
 
         // server exponencial
@@ -1669,14 +1671,33 @@ module.exports = {
         // let generator = new ArrivalGenerator(inputs.rho, utils.getDeterministic);
         // let server = new Server(1, utils.alternate([1.5, 0.1]));
 
-
         let stats = new StatsCollector();
         let currentTime = 0;
         let departuresTotal = 0;
 
         let nextArrival = generator.getNext();
 
-        for (let i = 0; i < nrodadas; i++) {
+        for (let i = -1; i < nrodadas; i++) {
+
+            if (i == -1) {
+                if (inputs.rho <= 0.7) {
+                    // 50000 para cada 0.1 de rho
+                    numFregueses = 500000 * inputs.rho;
+                } else {
+                    // +25% por 0.1 acima de 0.6
+                    let fatorAumento = (inputs.rho - 0.6) * 2.5;
+                    // +50% para 0.8, +100% para 0.9
+                    //let fatorAumento = 0.25 * Math.pow(2, 10 * (inputs.rho - 0.7));
+                    numFregueses = 500000 * inputs.rho * (1 + fatorAumento);
+                }
+                console.log("transiente com", numFregueses);
+            }
+
+            if (i == 0) {
+                console.log('total pos trans', departuresTotal);
+                numFregueses = inputs.fregueses;
+            }
+
             let arrivals = 0;
             let departures = 0;
 
@@ -1739,8 +1760,14 @@ module.exports = {
 
                         departuresTotal += 1;
 
-                        if (timeToCollect(departuresTotal, calc.intervalo, calc.totalFreguesesGrafico))
-                            colectData(stats, currentTime, wIter, nqIter);
+                        if (timeToCollect(departuresTotal, calc.intervalo, calc.totalFreguesesGrafico)) {
+                            if (i != -1) {
+                                colectData(stats, currentTime, wIter, nqIter);
+                            } else {
+                                colectData(stats, currentTime, wTrans, nqTrans);
+                            }
+                            // colectData(stats, currentTime, wIter, nqIter);
+                        }
                     }
                 }
             }
@@ -1754,6 +1781,8 @@ module.exports = {
             'stats': stats,
             'nqIter': nqIter,
             'wIter': wIter,
+            nqTrans: nqTrans,
+            wTrans: wTrans,
             'numPontos': calc.numPontos,
             'totalId': calc.numPontos * calc.intervalo
         };
@@ -1836,11 +1865,11 @@ class DiscreteEstimator {
 
     getTStudentConfidenceInterval() {
         let diff = (1.96 * this.getStdDev()) / Math.sqrt(this.n);
-
+        let precision = (diff/this.getAverage())*100;
         return {
             high: this.getAverage() + diff,
             low: this.getAverage() - diff,
-            precision: (diff/this.getAverage())*100,
+            precision: isNaN(precision) ? 100 : precision,
         }
     }
 
@@ -1979,16 +2008,13 @@ function exibeModal() {
     return new Promise(function (resolve, reject) {
 
         document.getElementById('loader').style.display = "block";
-        setTimeout(function(){ resolve()}, 100);
+        setTimeout(function(){ resolve(); }, 100);
     });
 }
 
 // Adiciona evento de 'click' no botão de play e executa o simulador.
 document.getElementById('run-button').addEventListener('click', () => {
-    
-
-    
-    exibeModal().then(function(){
+    exibeModal().then(function() {
 
         //Pega momento de início de simulação
         let startTime = new Date().getTime();
@@ -2014,9 +2040,7 @@ document.getElementById('run-button').addEventListener('click', () => {
         interface.fillICTable(result.stats);
         // Preenche tabela de métricas
         interface.clearTable('metricas-table');
-        interface.fillMetricasTable(result.stats, numeroRodadas);
-
-        //Adiciona uma última coluna contendo a média das métricas calculadas
+        //Adiciona uma primeira linha contendo a média das métricas calculadas
         interface.addTableRow('metricas-table', {
             'rodada': `<b>MÉDIA</b>`,
             'X': `<b>${result.stats.X.getAverage().toFixed(5)}</b>`,
@@ -2028,10 +2052,12 @@ document.getElementById('run-button').addEventListener('click', () => {
             'Nq': `<b>${result.stats.Nq.getAverage().toFixed(5)}</b>`,
             'vNq': `<b>${result.stats.vNq.getAverage().toFixed(5)}</b>`,
         });
+        interface.fillMetricasTable(result.stats, numeroRodadas);
+
 
         //Chamada de funções para exibição de gráficos
-        interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
-        interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
+        interface.createLineChart(result.totalId, result.nqIter, result.nqTrans, result.numPontos, 'chart-1', 'chart-area-1', 'Nq : #Fregueses');
+        interface.createLineChart(result.totalId, result.wIter, result.wTrans, result.numPontos, 'chart-2', 'chart-area-2', 'W : #Fregueses');
 
         //Pega o momento de finalização de exibição de métricas
         endTime = new Date().getTime();
@@ -2040,8 +2066,7 @@ document.getElementById('run-button').addEventListener('click', () => {
 
         //Desliga o loader
         document.getElementById('loader').style.display = "none";
-    })
-   
-})
+    });
+});
 
 },{"./Helpers/interface":17,"./Simulator/simulator":23}]},{},[27]);
