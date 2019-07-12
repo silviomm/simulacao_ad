@@ -3,7 +3,7 @@ const designChart = require('./design-chart');
 //Classe responsavel por criar as linhas utilizadas nos gráficos
 class Charts {
 
-    static createLineChart(labels, series, chartId) {
+    static createLineChart(labels, series, chartId, tooltipTitle) {
 
         // definindo parte transiente do grafico
         const transient = designChart.red_dataset;
@@ -17,6 +17,9 @@ class Charts {
 
         const datasets = [transient, normal]
 
+        let options = designChart.chartOptions;
+        options.tooltips.callbacks.title = () => {return tooltipTitle};
+
         var ctx = document.getElementById(chartId);
         new Chart(ctx, {
             type: 'line',
@@ -24,7 +27,7 @@ class Charts {
                 labels: labels,
                 datasets: datasets
             },
-            options: designChart.chartOptions
+            options: options
         });
     }
 }

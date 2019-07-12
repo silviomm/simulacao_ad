@@ -53,9 +53,7 @@ document.getElementById('run-button').addEventListener('click', () => {
         interface.fillICTable(result.stats);
         // Preenche tabela de métricas
         interface.clearTable('metricas-table');
-        interface.fillMetricasTable(result.stats, numeroRodadas);
-
-        //Adiciona uma última coluna contendo a média das métricas calculadas
+        //Adiciona uma primeira linha contendo a média das métricas calculadas
         interface.addTableRow('metricas-table', {
             'rodada': `<b>MÉDIA</b>`,
             'X': `<b>${result.stats.X.getAverage().toFixed(5)}</b>`,
@@ -67,10 +65,12 @@ document.getElementById('run-button').addEventListener('click', () => {
             'Nq': `<b>${result.stats.Nq.getAverage().toFixed(5)}</b>`,
             'vNq': `<b>${result.stats.vNq.getAverage().toFixed(5)}</b>`,
         });
+        interface.fillMetricasTable(result.stats, numeroRodadas);
+
 
         //Chamada de funções para exibição de gráficos
-        interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1');
-        interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2');
+        interface.createLineChart(result.totalId, result.nqIter, result.numPontos, 'chart-1', 'chart-area-1', 'Nq : #Fregueses');
+        interface.createLineChart(result.totalId, result.wIter, result.numPontos, 'chart-2', 'chart-area-2', 'W : #Fregueses');
 
         //Pega o momento de finalização de exibição de métricas
         endTime = new Date().getTime();

@@ -55,7 +55,7 @@ class Interface {
     }
 
     // Cria grafico canvas com parte transiente
-    static createLineChart(nTotal, dataPerTime, nPoints, chartId, chartAreaId) {
+    static createLineChart(nTotal, dataPerTime, nPoints, chartId, chartAreaId, tooltipTitle) {
         
         // remove canvas antigo
         let oldcanv = document.getElementById(chartId);
@@ -83,7 +83,8 @@ class Interface {
                 // 'normal': Array(transientPoints - 1).fill(null).concat(dataPerTime.slice(transientPoints, nPoints))
                 'normal': dataPerTime
             },
-            chartId
+            chartId,
+            tooltipTitle
         );
     }
 
